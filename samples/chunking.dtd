@@ -1,0 +1,4 @@
+<!-- Three high-level annotations types : NP, VP, PP -->
+<!ELEMENT NP (#PCDATA)>
+<!ELEMENT VP (#PCDATA)>
+<!ELEMENT PP (#PCDATA)>

@@ -1,0 +1,11 @@
+<!-- Four high-level annotations types : person, org, location, date -->
+<!ELEMENT person (#PCDATA)>
+<!ELEMENT org (#PCDATA)>
+<!ELEMENT location (#PCDATA)>
+  <!-- Attributes for locations, no default -->
+  <!ATTLIST location type (river|mountain|city|country) #IMPLIED>
+
+<!ELEMENT date (#PCDATA)>
+  <!-- Attributes for location, default is "absolute date" -->
+  <!ATTLIST date type (date|time|duration) #REQUIRED
+              rel (absolute|relative) absolute>
