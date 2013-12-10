@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	 xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+
+  <Description about="urn:mozilla:install-manifest">
+	  <em:id>WebAnnotator@limsi.fr</em:id>
+	  <em:unpack>true</em:unpack>
+	  <em:version>1.13</em:version>
+	  <em:type>2</em:type>
+	  <em:name>WebAnnotator</em:name>
+
+	  <em:targetApplication>
+		<Description>
+		  <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+		  <em:minVersion>3.5</em:minVersion>
+		  <em:maxVersion>22.*</em:maxVersion>
+		</Description>
+	  </em:targetApplication>
+	  
+	  <em:localized>
+		<Description>
+		  <em:locale>en-US</em:locale>
+		  <em:name>WebAnnotator</em:name>
+		  <em:description>WebAnnotator is an annotation tool for Web pages.</em:description>
+		</Description>
+	  </em:localized>
+	  <em:creator>Xavier Tannier</em:creator>
+	  <em:developer>Thibault Baste</em:developer>
+	  <em:developer>jingjing Li</em:developer>
+	  <em:developer>Jialin Liu</em:developer>
+
+	  <em:homepageURL>http://www.limsi.fr/Individu/xtannier/en/WebAnnotator/</em:homepageURL>
+	  <em:aboutURL>chrome://webannotator/content/description.xul</em:aboutURL>
+	  <em:iconURL>chrome://webannotator/skin/wa_small_activated.png</em:iconURL>
+  </Description>
+</RDF>
