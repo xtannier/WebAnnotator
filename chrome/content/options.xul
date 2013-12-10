@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<!DOCTYPE dialog SYSTEM "chrome://webannotator/locale/wa.dtd">
+
+<dialog id="donothing" title="Options"
+		xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+		buttons="accept,cancel"
+		onload="webannotator.options.searchOptions()"
+		buttonlabelcancel="&wa.cancel;"
+		buttonlabelaccept="&wa.save;"
+		ondialogaccept="return webannotator.options.saveOptions();"
+		ondialogcancel="">
+  <script type="text/javascript" src="options.js"></script>
+  <dialogheader title="Options" description="Web Annotator"/>
+  <vbox flex="1" style="overflow:auto">
+  <groupbox id="optionsbox">
+	<caption label="&wa.preferences;"/>
+	<vbox>
+	  <label value="&wa.fielddtdfile;"/><textbox id="dtdfilename" disabled="true"/>
+	  <label value="&wa.fieldschemaname;"/><textbox id="schemaname"/>
+	  <label value="&wa.fieldschemadescription;"/><textbox id="schemadesc" multiline="true" cols="3"/>
+	</vbox>
+  </groupbox>
+  <groupbox id="colorbox"> 
+	<caption label="&wa.colors;"/>
+    <box>
+      <grid>
+		<columns>
+		  <column flex="0"/>
+		  <column flex="0"/>
+		  <column flex="0"/>
+		  <column flex="0"/>
+		</columns>
+		<rows id="optionRows">
+		  <row>
+			<label value=""/>
+			<label value="Foreground color"/>
+			<label value="Background color"/>
+		  </row>
+		</rows>
+	  </grid>
+	</box>
+  </groupbox> 
+  </vbox>
+</dialog>
+

@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<dialog id="donothing" title="About WebAnnotator"
+   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+   xmlns:html="http://www.w3.org/1999/xhtml"
+   buttons="cancel"
+   buttonlabelcancel="Close"
+   ondialogcancel="return doCancel();">
+    
+  <box>
+	<image src="chrome://webannotator/skin/logo-limsi.png"/><spacer flex="1"/><image src="chrome://webannotator/skin/logo-upsud.png"/> 
+  </box>
+  <separator class="groove" orient="horizontal"/>
+  <groupbox>
+	<box>WebAnnotator has been developed at <label onclick="window.close()" class="text-link" href="http://www.limsi.fr/index.en.html">LIMSI/CNRS</label> and <label onclick="window.close()" class="text-link" href="http://www.u-psud.fr/en/index.html">University Paris-Sud.</label>
+	</box>
+  </groupbox>
+  <separator class="groove" orient="horizontal"/>
+  
+  <groupbox>
+	<caption><image src="chrome://webannotator/skin/wa_small_activated.png"/><separator orient="vertical"/>User guide:</caption>
+	<description style="width: 200px">
+	  Last updates, as well as a user guide can be found on <label onclick="window.close()" class="text-link" href="http://www.limsi.fr/~xtannier/en/WebAnnotator/">Web Annotator Home Page.</label> For any question, remark or if you wish to contribute, please contact <label value="xtannier@limsi.fr" style="color: blue; cursor:hand"/>
+	</description>
+  </groupbox>
+  <groupbox>
+	<caption><image src="chrome://webannotator/skin/wa_small_activated.png"/><separator orient="vertical"/>Contributors:</caption>
+	<html:div>
+	  <html:ul>
+		<html:li>Thibault Baste</html:li>
+		<html:li>Jialin Liu</html:li>
+		<html:li>Jingjing Li</html:li>
+		<html:li>Xavier Tannier</html:li>
+	  </html:ul>
+	</html:div>
+  </groupbox>
+  <groupbox>
+	<caption><image src="chrome://webannotator/skin/wa_small_activated.png"/><separator orient="vertical"/>Credits:</caption>
+	<label href="http://amb.vis.ne.jp/mozilla/scrapbook/" class="text-link" onclick="window.close()">http://amb.vis.ne.jp/mozilla/scrapbook/</label>
+  </groupbox>
+  
+  <script>
+	function doCancel(){
+	  return true;
+	}
+  </script>
+  
+</dialog>

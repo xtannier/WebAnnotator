@@ -1,0 +1,28 @@
+<!--https://developer.mozilla.org/En/Firefox_addons_developer_guide/Let%27s_build_a_Firefox_extension-->
+
+<!ENTITY wa.name "WebAnnotator">
+<!ENTITY wa.about "&#192; propos de">
+<!ENTITY wa.activatelastused "Activer le dernier sch&#233;ma">
+<!ENTITY wa.chooseschema "Choisir un sch&#233;ma">
+<!ENTITY wa.displayfiles "Afficher les fichiers">
+<!ENTITY wa.deleteschema "Effacer un sch&#233;ma">
+<!ENTITY wa.import "Importer une nouvelle DTD">
+<!ENTITY wa.export "Sauvegarder &amp; Exporter">
+
+<!ENTITY wa.types "Types">
+<!ENTITY wa.subtypes "Sous-types">
+<!ENTITY wa.text "Texte">
+<!ENTITY wa.all "Tous">
+
+<!ENTITY wa.disablelinks "D&#233;sactiver les liens">
+<!ENTITY wa.hidepanel "Cacher le panneau">
+<!ENTITY wa.options "Options">
+
+<!ENTITY wa.cancel "Annuler">
+<!ENTITY wa.save "Sauvegarder">
+<!ENTITY wa.preferences "Pr&#233;f&#233;rences">
+<!ENTITY wa.fielddtdfile "DTD :">
+<!ENTITY wa.fieldschemaname "Nom du sch&#233;ma :">
+<!ENTITY wa.fieldschemadescription "Description du sch&#233;ma">
+<!ENTITY wa.colors "Couleurs">
+<!ENTITY wa.movepopup "D&#233;placer les cadres de s&#233;lection">

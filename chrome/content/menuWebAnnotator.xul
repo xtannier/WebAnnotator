@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/css" href="chrome://webannotator/skin/wa.css"?>
+<!DOCTYPE overlay SYSTEM "chrome://webannotator/locale/wa.dtd">
+
+<overlay id="WA-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script type="text/javascript" src="misc.js"></script>
+  <script type="text/javascript" src="wa.js"></script>
+  <script type="text/javascript" src="htmlWA.js"></script>
+  <script type="text/javascript" src="popups.js"></script>
+  <script type="text/javascript" src="options.js"></script>
+  <script type="text/javascript" src="highlighter.js"></script>
+ 
+  <!-- Extend Firefox menu -->
+  <toolbarpalette id="BrowserToolbarPalette">
+	<toolbarbutton id="WebAnnotator_button" type="menu" 
+				   class="toolbarbutton-1 chromeclass-toolbar-additional"
+				   label="&wa.name;" tooltiptext="&wa.name;"
+				   oncommand="webannotator.main.updateMenus(true, false)">
+	  <menupopup id="WebAnnotator_menu_ButtonPopup">
+		<menuitem id="WebAnnotator_b_importMenu" oncommand="webannotator.main.importFile()"/>
+		<menu id="WebAnnotator_b_chooseMenu" >
+		  <menupopup id="WebAnnotator_b_chooseMenu_pop" >
+			<menuitem id="WebAnnotator_b_chooseMenu1"/>
+		  </menupopup>
+		</menu>
+		<menu id="WebAnnotator_b_deleteMenu">
+		  <menupopup id="WebAnnotator_b_deleteMenu_pop">
+			<menuitem id="WebAnnotator_b_deleteMenu1"/>
+		  </menupopup>
+		</menu>
+		<menuseparator/>
+		<menuitem id="WebAnnotator_b_activeMenu" oncommand=""/>
+		<menuseparator/>
+		<menuitem id="WebAnnotator_b_exportMenu" disabled="true" oncommand="window.showModalDialog('chrome://webannotator/content/save.xul',1)"/>
+		<menuseparator/>
+		<menuitem id="WebAnnotator_b_descriptionMenu" oncommand="window.showModalDialog('chrome://webannotator/content/description.xul',1)"/>
+	  </menupopup>
+	</toolbarbutton>
+  </toolbarpalette>
+
+  <menupopup id="menu_ToolsPopup">
+	<menu class="menu-iconic" image="chrome://webannotator/skin/wa_small_activated.png" id="WebAnnotator-menu">
+	  <menupopup id="WebAnnotator_t_menu_pop">
+		<menuitem id="WebAnnotator_t_importMenu" oncommand="webannotator.main.importFile()"/>
+		<menu id="WebAnnotator_t_chooseMenu" >
+		  <menupopup id="WebAnnotator_t_chooseMenu_pop" >
+			<menuitem id="WebAnnotator_t_chooseMenu1"/>
+		  </menupopup>
+		</menu>
+		<menu id="WebAnnotator_t_deleteMenu">
+		  <menupopup id="WebAnnotator_t_deleteMenu_pop">
+			<menuitem id="WebAnnotator_t_deleteMenu1"/>
+		  </menupopup>
+		</menu>
+		<menuseparator/>
+		<menuitem id="WebAnnotator_t_activeMenu"/>
+		<menuseparator/>
+		<menuitem id="WebAnnotator_t_exportMenu" disabled="true" oncommand="window.showModalDialog('chrome://webannotator/content/save.xul',1)"/>
+		<menuseparator/>
+		<menuitem id="WebAnnotator_t_descriptionMenu" oncommand="window.showModalDialog('chrome://webannotator/content/description.xul',1)"/>
+	  </menupopup>
+	</menu>
+  </menupopup>
+
+
+	<menu id="WebAnnotator-menu" label="&wa.name;"/>
+
+	<menu id="WebAnnotator_t_activeMenu" label="&wa.activatelastused;"/>
+	<menu id="WebAnnotator_t_chooseMenu" label="&wa.chooseschema;"/>
+	<menuitem id="WebAnnotator_t_chooseMenu1" label="&wa.displayfiles;"/>
+	<menu id="WebAnnotator_t_deleteMenu" label="&wa.deleteschema;"/>
+	<menuitem id="WebAnnotator_t_deleteMenu1" label="&wa.displayfiles;"/>
+	<menuitem id="WebAnnotator_t_deleteMenu2" label="file1"/>
+	<menuitem id="WebAnnotator_t_deleteMenu3" label="file2"/>
+	<menuitem id="WebAnnotator_t_importMenu" label="&wa.import;"/>
+	<menuitem id="WebAnnotator_t_exportMenu" label="&wa.export;"/>
+	<menuitem id="WebAnnotator_t_descriptionMenu" label="&wa.about; &wa.name;"/>
+
+	<menu id="WebAnnotator_b_activeMenu" label="&wa.activatelastused;"/>
+	<menu id="WebAnnotator_b_chooseMenu" label="&wa.chooseschema;"/>
+	<menuitem id="WebAnnotator_b_chooseMenu1" label="&wa.displayfiles;"/>
+	<menu id="WebAnnotator_b_deleteMenu" label="&wa.deleteschema;"/>
+	<menuitem id="WebAnnotator_b_deleteMenu1" label="&wa.displayfiles;"/>
+	<menuitem id="WebAnnotator_b_deleteMenu2" label="file1"/>
+	<menuitem id="WebAnnotator_b_deleteMenu3" label="file2"/>
+	<menuitem id="WebAnnotator_b_importMenu" label="&wa.import;"/>
+	<menuitem id="WebAnnotator_b_exportMenu" label="&wa.export;"/>
+	<menuitem id="WebAnnotator_b_descriptionMenu" label="&wa.about; &wa.name;"/>
+	
+
+    <!-- WA panel -->
+    <vbox minheight="3ex" id="appcontent">
+      <splitter id="WebAnnotator_waContentSplitter" collapsed="true"/>	  
+      <vbox id="WebAnnotator_waContentBox" collapsed="true" persist="height">
+		<tree id="WebAnnotator_waTable" onkeyup="webannotator.main.selectTree(this)" onclick="webannotator.main.clickTree(this, event)" editable="true" flex="1">
+		  <treecols>
+			<treecol id="WebAnnotator_remove" cycler="true" label="" flex="0"/>
+			<treecol id="WebAnnotator_edit" cycler="true" label="" flex="0"/>
+			<treecol id="WebAnnotator_id" label="WebAnnotator_id" flex="1"/>
+			<treecol id="WebAnnotator_type" label="&wa.types;" flex="1"/>
+			<treecol id="WebAnnotator_subtypes" label="&wa.subtypes;" flex="10"/>
+			<treecol id="WebAnnotator_text" label="&wa.text;" flex="10"/>
+		  </treecols>
+		  <treechildren id="WebAnnotator_tablecontent">
+		  </treechildren>
+		</tree>
+	  </vbox>
+	  <box align="center" id="WebAnnotator_waOptions" collapsed="true">
+		<menulist id="WebAnnotator_annotation_list" onselect="webannotator.main.selectMenuList(this);">
+		  <menupopup>
+			<menuitem label="&wa.all;" value="0"/>
+		  </menupopup>
+		</menulist>
+		<spring flex="1"/>
+		<image onclick="webannotator.htmlWA.shift_position(-1, 0)" tooltiptext="&wa.movepopup;" height="25px" src="chrome://webannotator/skin/arrow-left.png"/>
+		<image onclick="webannotator.htmlWA.shift_position(1, 0)" tooltiptext="&wa.movepopup;" height="25px" src="chrome://webannotator/skin/arrow-right.png"/>
+		<image onclick="webannotator.htmlWA.shift_position(0, 1)" tooltiptext="&wa.movepopup;" height="25px" src="chrome://webannotator/skin/arrow-down.png"/>
+		<image onclick="webannotator.htmlWA.shift_position(0, -1)" tooltiptext="&wa.movepopup;" height="25px" src="chrome://webannotator/skin/arrow-up.png"/>
+		<button id="WebAnnotator_linkButton" label="&wa.disablelinks;"
+				oncommand="webannotator.htmlWA.receiveWindowSwitchLinks();"/>
+		<button id="WebAnnotator_panelButton" label="&wa.hidepanel;"
+				oncommand="webannotator.main.switchPanel();"/>
+		<button id="WebAnnotator_options" label="&wa.options;"
+				oncommand="webannotator.main.options();"/>
+		<image src="chrome://webannotator/skin/wa_small_activated.png"/>
+		<separator class="groove" orient="vertical"/>
+	  </box>
+    </vbox>
+</overlay>

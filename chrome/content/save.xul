@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<!DOCTYPE dialog SYSTEM "chrome://webannotator/locale/wa.dtd">
+
+<dialog id="donothing" title="Save &amp; Export"
+		xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+		buttons="accept,cancel"
+		buttonlabelcancel="&wa.cancel;"
+		buttonlabelaccept="&wa.save;"
+		onload="webannotator.save.loadDefaults();"
+		ondialogaccept="return webannotator.save.validation();"
+		ondialogcancel="">
+  <script type="text/javascript" src="wa.js"></script>
+  <script type="text/javascript" src="htmlWA.js"></script>
+  <script type="text/javascript" src="save.js"></script>
+  <dialogheader title="Save &amp; Export" description="Web Annotator"/>
+
+  <vbox>
+  <groupbox id="savebox">
+	<caption label="Save as..."/>
+	<description style="width: 200px">
+	  This field is for saving the visual annotations as a local file.
+	  This is appropriate for human reading and for continue annotations
+	  later. 
+	</description>
+	<description style="width: 200px">
+	  Required.
+	</description>
+	<hbox>
+<!--	  <textbox readonly="true" onclick="if (this.value == '') selection('saveFileName', false);" id="saveFileName" size="50" flex="5"/>  -->
+	  <textbox readonly="true" id="saveFileName" size="50" flex="5"/> 
+	  <button label="Browse" oncommand="webannotator.save.selection('saveFileName', false);"/>
+	</hbox>
+	<checkbox id="color_cb" label="Keep color information outside WebAnnotator" checked="false"/>
+	<checkbox id="links_cb" label="Activate links" checked="false"/>
+  </groupbox>
+  <groupbox id="optionsbox">
+	<caption label="Export as..."/>
+	<description style="width: 200px">
+	  This field is for exporting the annotations as a machine-readable
+	  local file.
+	  The resulting file will not allow you to continue annotations
+	  later. 
+	</description>
+	<description style="width: 200px">
+	  Leave empty or clear for no export.
+	</description>
+	<hbox>
+<!--	  <textbox readonly="true" onclick="if (this.value == '') selection('exportFileName', false);" id="exportFileName" size="50" flex="5"/>-->
+	  <textbox readonly="true" id="exportFileName" size="50" flex="5"/>
+	  <button label="Clear field" oncommand="document.getElementById('exportFileName').value=''"/>
+	  <button label="Browse" oncommand="webannotator.save.selection('exportFileName', false);"/>
+	</hbox>
+  </groupbox>
+  <separator class="groove" orient="horizontal" />
+  <groupbox id="dirbox">
+	<checkbox id="save_cb" oncommand="webannotator.save.checkDir(this)" label="Save linked URIs (images, etc.)" checked="false"/>
+	<!--<caption label="Directory to linked elements"/> -->
+	<box>
+	  <separator class="groove-thin" orient="vertical"/>
+	  <vbox>
+		<description id="descDir1" style="width: 200px" disabled="true">
+		  This field contains the name of the directory 
+		  where URIs linked (images, etc.) to the document should be
+		  saved.
+		</description>
+		<description id="descDir2" style="width: 200px" disabled="true">
+		  Leave empty for not saving linked elements.
+		</description>
+		<hbox>
+<!--		  <textbox readonly="true" onclick="if (this.value == '') selection('linkedDirName', true);" id="linkedDirName" size="50" flex="5" disabled="true"/> -->
+		  <textbox readonly="true" id="linkedDirName" size="50" flex="5"/>
+		  <button label="Clear field" oncommand="document.getElementById('linkedDirName').value=''"/>
+		  <button id="linkedDirButton" label="Browse" oncommand="webannotator.save.selection('linkedDirName', true);" disabled="true"/>
+		</hbox>
+	  </vbox>
+	</box>
+  </groupbox>
+  <separator class="groove" orient="horizontal" />
+  <groupbox id="deactivatebox">
+	<checkbox id="quit_cb" label="Quit session after saving" checked="false"/>
+  </groupbox>
+  </vbox>
+ </dialog>
+
