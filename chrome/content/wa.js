@@ -1,11 +1,11 @@
 // See license.txt for terms of usage
 
 // namespace
-if (typeof webannotator == "undefined") {  
-	var webannotator = {};  
-};  
+if (typeof webannotator == "undefined") {
+	var webannotator = {};
+};
 
-// File that contains all the names of the default files 
+// File that contains all the names of the default files
 webannotator.fileSet = "webAnnotator.json";
 
 // Elements from already loaded schemas
@@ -16,10 +16,10 @@ webannotator.schemaColorsFileName = "elementColors.json";
 // Path to chrome content
 webannotator.contentPath = "chrome://webannotator/content/";
 
-// Names of the schema files 
+// Names of the schema files
 webannotator.schemas = [];
 
-// Name of the DTD file 
+// Name of the DTD file
 webannotator.dtdFileName = "";
 
 // Path of the extension
@@ -76,20 +76,20 @@ webannotator.currentDtdElementConstraints = null;
 webannotator.dirService = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties);
 
 
-// DTD patterns 
+// DTD patterns
 // Element
 // example : <!ELEMENT food (#PCDATA)>
 webannotator.elementPattern = /<!ELEMENT\s+([^ ]+)\s+(.*)>/;
 // Attributes
-// examples :   
+// examples :
 // <!ATTLIST food type (fruit|grain|proteins|dairy|vegetable) #IMPLIED
 //                taste (salty|sour|sweet|bitter|umami) #IMPLIED>
 // <!ATTLIST food flavor (awful|bad|bland|good|delicious) "bland">
 // <!ATTLIST food other CDATA >
 webannotator.attributePattern = /<!ATTLIST\s+([^ ]+)\s+([^ ]+)\s+([^ ]+)\s*([^ ]+)?(.*)>/;
 webannotator.nextAttributesPattern = /\s*([^ ]+)\s+\(([^\)]+)\)\s+([^ ]+)(.*)$/;
-// Entities 
-// example : 
+// Entities
+// example :
 // <!ENTITY callisto_task_version "1.0">
 webannotator.entityPattern = /<!ENTITY\s+([^ ]+)\s+"([^"]+)"\s*>/;
 
@@ -110,7 +110,7 @@ document.addEventListener("webannotator.saveAndExport", function(e) { webannotat
 document.addEventListener("webannotator.resetExtension", function(e) { webannotator.main.deactivate(); return false;}, false);
 
 webannotator.main = {
-	
+
 	/**
 	 * A few string manipulation functions
 	 */
@@ -122,7 +122,7 @@ webannotator.main = {
 		return (str.match(pattern + "$") !== null);
 	},
 
-	trim: function (str) { 
+	trim: function (str) {
 		return str.replace(/^\s+/g,'').replace(/\s+$/g,'');
 	},
 
@@ -161,20 +161,20 @@ webannotator.main = {
 			webannotator.main.setPathEX2(em.path);
 		}*/
 	},
-	
+
 	/**
 	 * ACTIVATE THE EXTENSION
 	 */
-	activate: function() {	
+	activate: function() {
 		// if a schema has been selected
 		if (webannotator.dtdFileName != "") {
 			// Build annotations from WA spans in loaded document
 			webannotator.main.buildAnnotations();
 			webannotator.main.activateHTMLDocument();
-		
+
 			webannotator.session = true;
 
-			// Add elements concerning colors		
+			// Add elements concerning colors
 			var colorNodes = content.document.getElementsByTagName("WA-color");
 			// remove existing color items
 			for (i = 0 ; i < colorNodes.length ; i++) {
@@ -204,10 +204,10 @@ webannotator.main = {
 			webannotator.main.receiveShowAnnotations();
 			// The page has not been modified yet
 			webannotator.main.setModified(false);
-		} 
+		}
 		// If not schema has been selected (should not happen)
 		else {
-			webannotator.main.locale_alert("waChooseDTD");		
+			webannotator.main.locale_alert("waChooseDTD");
 		}
 	},
 
@@ -229,8 +229,8 @@ webannotator.main = {
 	activateHTMLDocument: function () {
 		var head = content.document.getElementsByTagName("head")[0];
 		var scriptPath;
-		
-		// Once the schema is selected, 
+
+		// Once the schema is selected,
 		// include the pre-defined corresponding CSS file in order
 		// to visualize highlighted spans
 		var link = content.document.createElement("link");
@@ -239,19 +239,19 @@ webannotator.main = {
 		link.setAttribute("rel","stylesheet");
 		link.setAttribute("href", webannotator.contentPath + "schemas/"+ webannotator.dtdFileName + ".css");
 		head.appendChild(link);
-		
+
 		var body = content.document.body;
-		
+
 		// Add element for communication between HTML and XUL
 		var dom = webannotator.misc.jsonToDOM(["WA_data_element", {id:"WA_data_element", "WA-maxid":""+webannotator.maxId},
 										   ""], content.document);
 		webannotator.main.setModified(false);
-		content.document.documentElement.appendChild(dom);  
+		content.document.documentElement.appendChild(dom);
 		// building the panels
 		webannotator.main.buildPopups(webannotator.dtdFileName);
-		
-		// event listeners cannot be registered for the onbeforeunload event with 
-		// the addEventListener and attachEvent methods 
+
+		// event listeners cannot be registered for the onbeforeunload event with
+		// the addEventListener and attachEvent methods
 		// (only Safari and Google Chrome support it).
 		body.setAttribute("onbeforeunload",'var dataElement = document.getElementById("WA_data_element"); var modified = dataElement.getAttribute("modified"); var evt = document.createEvent("Events"); evt.initEvent("webannotator.resetExtension", true, true); dataElement.dispatchEvent(evt); modified = dataElement.getAttribute("modified"); if (modified == "true") {return ""; }');
 
@@ -262,19 +262,19 @@ webannotator.main = {
 //		body.addEventListener("beforeunload", webannotator.main.quit, true);
 //		body.setAttribute("onbeforeunload", function(e) {webannotator.main.quit(e)});
 //		body.onbeforeunload = function(e) {webannotator.main.quit(e);};
-		
+
 		body.addEventListener("mouseup", webannotator.htmlWA.openMenu, false);
 		body.addEventListener("mouseover", webannotator.htmlWA.firstLoad, false);
 	},
 
 	quit: function(e) {
-		var e = e || window.event;  
-		var dataElement = window.content.document.getElementById("WA_data_element"); 
-		var modified = dataElement.getAttribute("modified"); 
-		var evt = window.content.document.createEvent("Events"); 
-		evt.initEvent("webannotator.resetExtension", true, true); 
-		dataElement.dispatchEvent(evt); 
-		modified = dataElement.getAttribute("modified"); 
+		var e = e || window.event;
+		var dataElement = window.content.document.getElementById("WA_data_element");
+		var modified = dataElement.getAttribute("modified");
+		var evt = window.content.document.createEvent("Events");
+		evt.initEvent("webannotator.resetExtension", true, true);
+		dataElement.dispatchEvent(evt);
+		modified = dataElement.getAttribute("modified");
 		if (modified == "true") {e.returnValue=""; return "";}
 	},
 
@@ -286,14 +286,14 @@ webannotator.main = {
 		// main elements
 		var dom = webannotator.misc.jsonToDOM(["div", {id:"webannotator-main-menu", style:"display:none;"},
 								""], document);
-		body.appendChild(dom);  
+		body.appendChild(dom);
 
 		// secondary elements
 		dom = webannotator.misc.jsonToDOM(["div", {id:"webannotator-sec-menu", style:"display:none;"},
 							""], document);
-		body.appendChild(dom);  
+		body.appendChild(dom);
 		// edit popup
-		dom = webannotator.misc.jsonToDOM(["div", {id:"webannotator-edit-menu", 
+		dom = webannotator.misc.jsonToDOM(["div", {id:"webannotator-edit-menu",
 									style:"font-family:arial;z-index:5;position:absolute;display:none;background-color:white;",
 									onmouseover:function(e) { webannotator.htmlWA.retainEditAnnotationMenu(); return false;},
 									onmouseout:function(e) { webannotator.htmlWA.hideEditAnnotationMenu(); return false;}
@@ -304,26 +304,26 @@ webannotator.main = {
 								["img", {onclick:function(e) { webannotator.popups.hide_popup("webannotator-edit-menu"); webannotator.htmlWA.receiveWindowEditAnnotation(e); return false;},
 										 src:'chrome://webannotator/skin/edit.png'}, ""]
 							]
-						   ], 
+						   ],
 						   document);
-		body.appendChild(dom);  
+		body.appendChild(dom);
 		webannotator.main.initVarMenu(dtdFileName);
 		webannotator.isOpen = false;
 	},
-	
+
 	/**
 	 * Return the number of attributes in an object
 	 */
-	sizeObject: function (obj) { 
-		var size = 0, key; 
-		for (key in obj) { 
+	sizeObject: function (obj) {
+		var size = 0, key;
+		for (key in obj) {
 			if (obj.hasOwnProperty(key)) {
-				size++; 
+				size++;
 			}
-		} 
-		return size; 
+		}
+		return size;
 	},
-	
+
 	/**
 	 * Initialize the content of annotation popup menus
 	 * according to the specified schema
@@ -332,31 +332,31 @@ webannotator.main = {
 		var body = content.document.body;
 		webannotator.currentDtdElements = webannotator.elements[dtdFileName];
 		webannotator.currentDtdElementConstraints = webannotator.elementConstraints[dtdFileName];
-		
-		// Create div for selection of main user-defined classes 
+
+		// Create div for selection of main user-defined classes
 		var mainMenuContent = "";
 		var n;
-		
+
 		var elems = new Array();
 		for (n in webannotator.currentDtdElements) {
 			var _attributes = webannotator.currentDtdElements[n];
 			/**/
-			
+
 			var attributeLength = webannotator.main.sizeObject(_attributes);
-	
-			var color = webannotator.htmlWA.getColor(dtdFileName, n, -1);		
-		
+
+			var color = webannotator.htmlWA.getColor(dtdFileName, n, -1);
+
 			if(attributeLength == 0) {
 				elems.push(["button", {id:'button_' + n,
-									   number: n, 
+									   number: n,
 									   onclick:function(e) {webannotator.htmlWA.action(this.getAttribute('number')); webannotator.popups.hide_popup("webannotator-main-menu");},
 									   style:"color:" + color[0] + "; background-color:" + color[1] + ";",
 									   class:'WebAnnotator_' + n}, n]);
 			}
-			
+
 			else {
 				elems.push(["button", {id:'button_' + n,
-									   number: n, 
+									   number: n,
 									   onclick:function(e) {webannotator.htmlWA.changeSecondaryMenu(this.getAttribute('number')); webannotator.popups.show_popup("webannotator-sec-menu", e); webannotator.popups.hide_popup("webannotator-main-menu");},
 									   style:"color:" + color[0] + "; background-color:" + color[1] + ";",
 									   class:'WebAnnotator_' + n}, n]);
@@ -368,7 +368,7 @@ webannotator.main = {
 		var dom = webannotator.misc.jsonToDOM(["div", {id:"webannotator-main-menu", style:"font-family:arial;z-index:5;position:absolute;display:none;border:thin solid black;background-color:white;text-align:center;"},
 								[
 									["div", {id:"webannotator-main-menu-elems"}, elems],
-									["div", {}, ["button", {href:"#", 
+									["div", {}, ["button", {href:"#",
 															onclick:function(e) {webannotator.popups.hide_popup('webannotator-main-menu'); webannotator.htmlWA.closeMenu();}
 														   },
 												 webannotator.bundle.GetStringFromName("waCancel")]
@@ -392,7 +392,7 @@ webannotator.main = {
 		if (exportMenu != null) {
 			exportMenu.setAttribute("disabled", "false");
 		}
-		
+
 		activeMenu = document.getElementById("WebAnnotator_t_activeMenu");
 		if (activeMenu != null) {
 			activeMenu.setAttribute("label", webannotator.bundle.GetStringFromName("waDeactivate"));
@@ -400,15 +400,15 @@ webannotator.main = {
 		}
 		exportMenu = document.getElementById("WebAnnotator_t_exportMenu");
 		if (exportMenu != null) {
-			exportMenu.setAttribute("disabled", "false");		
+			exportMenu.setAttribute("disabled", "false");
 		}
-		
+
 		var container = gBrowser.tabContainer;
 		container.addEventListener("TabSelect", webannotator.main.tabSelect, false);
 	},
-	
+
 	/**
-	 * When an already annotated page is reloaded, 
+	 * When an already annotated page is reloaded,
 	 * give appropriate colors to WA spans
 	 */
 	setSpanColorStyle: function (doc, value) {
@@ -429,7 +429,7 @@ webannotator.main = {
 			}
 		}
 	},
-	
+
 	/**
 	 * When a new tab is selected (activate or deactivate WA session)
 	 */
@@ -437,7 +437,7 @@ webannotator.main = {
 		// If this tab contains a WA data element, activate button
 		if (window.content.document.getElementById("WA_data_element")) {
 			webannotator.main.intoFocus();
-		} 
+		}
 		// Else, deactivate button, unless no other tab has
 		// a WA data element
 		else {
@@ -457,12 +457,12 @@ webannotator.main = {
 			}
 		}
 	},
-	
+
 	/**
 	 * When tab containing the annotated page is left
 	 */
 	outOfFocus: function () {
-		webannotator.main.showWAPanel(false); 
+		webannotator.main.showWAPanel(false);
 		document.getElementById("WebAnnotator_waOptions").collapsed = true;
 		// Disable button
 		var button = document.getElementById("WebAnnotator_button");
@@ -472,12 +472,12 @@ webannotator.main = {
 		var menu = document.getElementById("WebAnnotator-menu");
 		menu.disabled = true;
 	},
-	
+
 	/**
 	 * When tab containing the annotated page is selected
 	 */
 	intoFocus: function () {
-		webannotator.main.showWAPanel(true); 
+		webannotator.main.showWAPanel(true);
 		document.getElementById("WebAnnotator_waOptions").collapsed = false;
 		webannotator.main.enableAddOn();
 	},
@@ -494,7 +494,7 @@ webannotator.main = {
 		var menu = document.getElementById("WebAnnotator-menu");
 		menu.disabled = false;
 	},
-	
+
 	/**
 	 * Deactivate the annotation session
 	 */
@@ -504,12 +504,12 @@ webannotator.main = {
 			// Display the dialogue to confirm whether delete or not
 			r = confirm(webannotator.bundle.GetStringFromName("waDeactivateConfirm"));
 		}
-		
-		// Confirm 
+
+		// Confirm
 		if (r == true) {
 			webannotator.session = false;
 			webannotator.main.showWAPanel(false);
-			
+
 			document.getElementById("WebAnnotator_waOptions").collapsed = true;
 			webannotator.dtdFileName = "";
 			webannotator.main.updateMenus(true, true);
@@ -520,8 +520,8 @@ webannotator.main = {
 			var selectedIds = [];
 			webannotator.main.updateTable(selectedIds, true);
 
-			// event listeners cannot be registered for the onbeforeunload event with 
-			// the addEventListener and attachEvent methods 
+			// event listeners cannot be registered for the onbeforeunload event with
+			// the addEventListener and attachEvent methods
 			// (only Safari and Google Chrome support it).
 			content.document.body.setAttribute("onbeforeunload", "");
 
@@ -541,13 +541,13 @@ webannotator.main = {
 			webannotator.main.setModified(false);
 			var container = gBrowser.tabContainer;
 			container.removeEventListener("TabSelect", webannotator.main.tabSelect, false);
-			
-			webannotator.main.enableAddOn(); 
+
+			webannotator.main.enableAddOn();
 			webannotator.noLoad = true;
 		} else {
 		}
 	},
-	
+
 	/**
 	 * Show or hide the bottom panel of the addon
 	 */
@@ -557,8 +557,8 @@ webannotator.main = {
 		waPanel.collapsed = !show;
 		waSplitter.collapsed = !show;
 	},
-	
-	
+
+
 	/**
 	 * Write the list of annotation schemas into file
 	 */
@@ -572,7 +572,7 @@ webannotator.main = {
 				file.remove(false);
 			}
 			file.create(file.NORMAL_FILE_TYPE, 0666);
-			jsonElements = JSON.stringify(webannotator.schemas);  
+			jsonElements = JSON.stringify(webannotator.schemas);
 			ostream = Components.classes["@mozilla.org/network/file-output-stream;1"].
 				createInstance(Components.interfaces.nsIFileOutputStream);
 			ostream.init(file, 2, 0x200, false);
@@ -582,14 +582,14 @@ webannotator.main = {
 		catch (ex) {
 			alert("ERROR: Failed to write file: " + file.leafName);
 		}
-	}, 
-	
+	},
+
 
 	/**
-	 * Read the names of the annotation schemas files 
+	 * Read the names of the annotation schemas files
 	 * that are stored in the system.
 	 */
-	readSchemasFile: function () {		
+	readSchemasFile: function () {
 		var file = webannotator.main.getPathEx();
 		file.append(webannotator.fileSet);
 		var inputStream;
@@ -612,7 +612,7 @@ webannotator.main = {
 			}
 
 			if (json.length) {
-				webannotator.schemas = JSON.parse(json);  
+				webannotator.schemas = JSON.parse(json);
 			}
 			cstream.close();
 			inputStream.close();
@@ -622,7 +622,7 @@ webannotator.main = {
 			webannotator.main.createJSON();
 			return;
 		}
-		
+
 		// Load elements, element constraints and colors
 		// Save elements
 		file = webannotator.main.getPathEx();
@@ -632,10 +632,10 @@ webannotator.main = {
                 .createInstance(Components.interfaces.nsIFileInputStream);
             cstream = Components.classes["@mozilla.org/intl/converter-input-stream;1"]
                 .createInstance(Components.interfaces.nsIConverterInputStream);
-			
+
             inputStream.init(file, 0x01, 0444, 0);
             cstream.init(inputStream, "UTF-8", 0, 0);
-			
+
             // Load .
             var json = "";
             var data = {};
@@ -644,7 +644,7 @@ webannotator.main = {
 			}
 
 			if (json.length) {
-				webannotator.elements = JSON.parse(json);  
+				webannotator.elements = JSON.parse(json);
 			}
 			cstream.close();
 			inputStream.close();
@@ -661,10 +661,10 @@ webannotator.main = {
                 .createInstance(Components.interfaces.nsIFileInputStream);
             cstream = Components.classes["@mozilla.org/intl/converter-input-stream;1"]
                 .createInstance(Components.interfaces.nsIConverterInputStream);
-			
+
             inputStream.init(file, 0x01, 0444, 0);
             cstream.init(inputStream, "UTF-8", 0, 0);
-			
+
             // Load .
             var json = "";
             var data = {};
@@ -673,7 +673,7 @@ webannotator.main = {
 			}
 
 			if (json.length) {
-				webannotator.elementConstraints = JSON.parse(json);  
+				webannotator.elementConstraints = JSON.parse(json);
 			}
 			cstream.close();
 			inputStream.close();
@@ -681,7 +681,7 @@ webannotator.main = {
 			webannotator.createJSON();
 			return;
 		}
-		
+
 		// Save element colors
 		file = webannotator.main.getPathEx();
 		file.append(webannotator.schemaColorsFileName);
@@ -690,10 +690,10 @@ webannotator.main = {
                 .createInstance(Components.interfaces.nsIFileInputStream);
             cstream = Components.classes["@mozilla.org/intl/converter-input-stream;1"]
                 .createInstance(Components.interfaces.nsIConverterInputStream);
-			
+
             inputStream.init(file, 0x01, 0444, 0);
             cstream.init(inputStream, "UTF-8", 0, 0);
-			
+
             // Load .
             var json = "";
             var data = {};
@@ -702,7 +702,7 @@ webannotator.main = {
 			}
 
 			if (json.length) {
-				webannotator.colors = JSON.parse(json);  
+				webannotator.colors = JSON.parse(json);
 			}
 			cstream.close();
 			inputStream.close();
@@ -711,7 +711,7 @@ webannotator.main = {
 			return;
 		}
 	},
-	
+
 
 	/**
 	 * Read the informations about the new annotation schema
@@ -723,7 +723,7 @@ webannotator.main = {
             createInstance(Components.interfaces.nsIFileInputStream);
 		istream.init(file, 0x01, 0444, 0);
 		istream.QueryInterface(Components.interfaces.nsILineInputStream);
-		
+
 		// read lines into an array
 		var line = {}, strLine, lines = [], hasmore;
 		var error = 0;
@@ -736,7 +736,7 @@ webannotator.main = {
 			// else (continuation of previous line), concat with last element
 			if (strLine.length > 0) {
 				if (webannotator.main.startsWith(strLine,"<!")) {
-					lines.push(strLine); 
+					lines.push(strLine);
 				} else {
 					if (lines.length == 0) {
 						error = 1;
@@ -748,7 +748,7 @@ webannotator.main = {
 			}
 		} while(hasmore);
 		istream.close();
-		
+
 		if (error <= 0) {
 			// Get the information of the file
 			// Information about one section : name and list of attributes
@@ -766,8 +766,8 @@ webannotator.main = {
 				// ELEMENT
 				var match = webannotator.elementPattern.exec(strLine);
 				if (match !== null) {
-					_dtdElements[match[1]] = {}; 
-					_dtdElementConstraints[match[1]] = {}; 
+					_dtdElements[match[1]] = {};
+					_dtdElementConstraints[match[1]] = {};
 				} else {
 					// ATTRIBUTE
 					// match[1] = element name
@@ -787,10 +787,10 @@ webannotator.main = {
 							elementName = match[1];
 							_attributes = _dtdElements[elementName];
 							_attributeConstraints = _dtdElementConstraints[elementName];
-							
+
 							// Get attribute values and trim each of them
 							var attValue = match[3];
-							
+
 							// list of values
 							if (webannotator.main.startsWith(attValue, "\\(")) {
 								if (!webannotator.main.endsWith(attValue, "\\)")) {
@@ -807,7 +807,7 @@ webannotator.main = {
 									_attributeConstraints[match[2]] = match[4];
 								}
 							}
-							
+
 							// CDATA
 							else if (attValue == "CDATA") {
 								_attributes[match[2]] = "CDATA";
@@ -815,7 +815,7 @@ webannotator.main = {
 							}
 							nextAttributes = match[5];
 							while (error == 0 && nextAttributes.length > 0) {
-								// Ici, 
+								// Ici,
 								// match[1] = attribute name
 								// match[2] = attribute values
 								// match[3] = IMPLIED, REQUIRED or default value
@@ -841,7 +841,7 @@ webannotator.main = {
 						}
 					}
 					else {
-						// ENTITY 
+						// ENTITY
 						match = webannotator.entityPattern.exec(strLine);
 						// if entity, do nothing
 						if (match !== null) {
@@ -865,7 +865,7 @@ webannotator.main = {
 		}
 		return error;
 	},
-	
+
 	/**
 	 * Delete the schema file corresponding to specifed id
 	 */
@@ -873,7 +873,7 @@ webannotator.main = {
 		var schema = webannotator.schemas[id];
 		var label = schema["name"];
 		var fileName = schema["filename"];
-		
+
 		// if the schema is currently in use, cannot delete it
 		if (webannotator.dtdFileName == fileName) {
 			webannotator.main.locale_alert("waSchemaAlreadyUsed");
@@ -882,47 +882,47 @@ webannotator.main = {
 		else {
 			// Display the dialogue to confirm whether delete or not
 			var r=confirm(webannotator.bundle.GetStringFromName("waDeleteConfirm") + " \"" + label + "\"?");
-			
+
 			// Confirm to delete
 			if (r==true) {
 				var file = webannotator.main.getPathEx();
 				file.append(label + ".css");
-				
+
 				if (file.exists()){
-					file.remove(false);	
+					file.remove(false);
 				}
-				
+
 				// delete the name of the file in the files
 				var i;
 				for (i =0; i < webannotator.schemas.length ; i++){
 					if (webannotator.schemas[i]["name"] == label){
 						break;
-					}		
+					}
 				}
-				
+
 				webannotator.schemas.splice(i,1);
-				
+
 				// Remove file name from elements
 				// and rewrite the elements javascript
 				// initialisation file
-				delete webannotator.elements[fileName];   
+				delete webannotator.elements[fileName];
 				delete webannotator.elementConstraints[fileName];
 				if (typeof(webannotator.colors) != 'undefined' && webannotator.colors[fileName]) {
 					delete webannotator.colors[fileName];
 				}
 				webannotator.main.createJSON();
-				
-				// Rewrite the file containing the list 
+
+				// Rewrite the file containing the list
 				// of annotation schemas
 				webannotator.main.writeSchemasFile();
-				
+
 				// Display the message
 				webannotator.main.locale_alert("waDeleteOk");
 				webannotator.main.updateMenus(true, true);
 			}
 		}
 	},
-	
+
 	/**
 	 * Create XUL menus
 	 */
@@ -930,7 +930,7 @@ webannotator.main = {
 		webannotator.main.updateMenus(!webannotator.buttonMenuCreated,
 									  !webannotator.textMenuCreated);
 	},
-	
+
 	/**
 	 * Update XUL menus for activating or deleting annotation schemas
 	 */
@@ -947,14 +947,14 @@ webannotator.main = {
 			if (b_menu1 != null) {
 				b_menu1.setAttribute("disabled", "true");
 				b_menu2.setAttribute("disabled", "true");
-				b_activeMenu.setAttribute("disabled", "true");	
-			} 
+				b_activeMenu.setAttribute("disabled", "true");
+			}
 			if (t_menu1 != null) {
 				t_menu1.setAttribute("disabled", "true");
 				t_menu2.setAttribute("disabled", "true");
 				t_activeMenu.setAttribute("disabled", "true");
 			}
-		} 
+		}
 		// if schema files are available, update menus
 		// and enable them
 		else {
@@ -970,7 +970,7 @@ webannotator.main = {
 				while (b_menuDeleteNodes.hasChildNodes()) {
 					b_menuDeleteNodes.removeChild(b_menuDeleteNodes.firstChild);
 				}
-				
+
 				// Add the names of the files in the menu: choose DTD and delete DTD
 				var lastUsedFound = 0;
 				var i;
@@ -1011,7 +1011,7 @@ webannotator.main = {
 				while (t_menuDeleteNodes.hasChildNodes()) {
 					t_menuDeleteNodes.removeChild(t_menuDeleteNodes.firstChild);
 				}
-				
+
 				// Add the names of the files in the menu: choose DTD and delete DTD
 				var lastUsedFound = 0;
 				var i;
@@ -1069,8 +1069,8 @@ webannotator.main = {
 		else if (webannotator.session && webannotator.modified) {
 			webannotator.main.locale_alert("waCantLoadNewSchema");
 		}
-		// if an annotation session has already started 
-		// and if the user loads manually another annotated 
+		// if an annotation session has already started
+		// and if the user loads manually another annotated
 		// file, do nothing
 		else if (webannotator.session && fromManualLoad) {
 		}
@@ -1085,7 +1085,7 @@ webannotator.main = {
 			webannotator.dtdFileName = currentSchema["filename"];
 
 			webannotator.main.writeSchemasFile();
-			webannotator.main.activate();			
+			webannotator.main.activate();
 			var element = window.content.document.getElementById("WA_data_element");
 			element.setAttribute("schemaname", currentSchema["name"]);
 			element.setAttribute("schemadesc", currentSchema["desc"]);
@@ -1107,32 +1107,32 @@ webannotator.main = {
 			var nsIFilePicker = Components.interfaces.nsIFilePicker;
 			var fileChooser = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 			fileChooser.init(window, webannotator.bundle.GetStringFromName("waImportSelection"), nsIFilePicker.modeOpen);
-			fileChooser.appendFilter(webannotator.bundle.GetStringFromName("waImportDTDFiles"),"*.dtd; *.DTD");    
+			fileChooser.appendFilter(webannotator.bundle.GetStringFromName("waImportDTDFiles"),"*.dtd; *.DTD");
 			var res = fileChooser.show();
-			if (res == nsIFilePicker.returnOK){		
+			if (res == nsIFilePicker.returnOK){
 				var file = fileChooser.file;
 				var label = file.leafName;
-				
-				var error = webannotator.main.readDTDFile(file);		
-				
+
+				var error = webannotator.main.readDTDFile(file);
+
 				var str;
-				
+
 				if(error <= 0) {
 					var i = 0;
 					var j;
 					var flag = -1;
-					
+
 					for(i =0; i < webannotator.schemas.length ; i++){
 						if(webannotator.schemas[i]["filename"] == label){
 							flag = i;
 							break;
-						}		
+						}
 					}
-					
+
 					var ok = true;
 					if(flag >= 0) {
 						ok = confirm(webannotator.bundle.GetStringFromName("waDuplicateImportConfirm1") + " " + label + " " + webannotator.bundle.GetStringFromName("waDuplicateImportConfirm2"));
-					} 
+					}
 					if (ok) {
 						var oldDTDFileName = webannotator.dtdFileName;
 						webannotator.dtdFileName = file.leafName;
@@ -1150,7 +1150,7 @@ webannotator.main = {
 							if (typeof(webannotator.colors) != 'undefined' && webannotator.colors[webannotator.dtdFileName]) {
 								delete webannotator.colors[webannotator.dtdFileName];
 							}
-						} 
+						}
 						// new
 						else {
 							newSchema = {};
@@ -1226,7 +1226,7 @@ webannotator.main = {
 				// Find the annotation id for this span
 				id = spans[i].getAttribute("WA-id");
 				var idExist = false;
-				
+
 				var j;
 				// Find if this is the first span for this annotation id
 				for(j = 0; j < idArray.length ; j++){
@@ -1251,20 +1251,20 @@ webannotator.main = {
 				}
 			}
 		}
-		
+
 		// Insert start tags
 		for(i = 0; i < spansStartArray.length ; i++) {
 			id = spansStartArray[i].getAttribute("WA-id");
 			var typeText = spansStartArray[i].getAttribute("wa-type");
 			var subtypesText = spansStartArray[i].getAttribute("wa-subtypes");
-			var waNode_start = webannotator.misc.jsonToDOM(["WA_Start", {"WA-id":id, type:typeText, subtypes:subtypesText}, ""], 
+			var waNode_start = webannotator.misc.jsonToDOM(["WA_Start", {"WA-id":id, type:typeText, subtypes:subtypesText}, ""],
 											clone);
 			spansStartArray[i].parentNode.insertBefore(waNode_start,spansStartArray[i]);
 		}
 		// Insert end tags
 		for(i = 0; i < spansEndArray.length ; i++) {
 			id = spansEndArray[i].getAttribute("WA-id");
-			var waNode_End = webannotator.misc.jsonToDOM(["WA_End", {"WA-id":id}, ""], 
+			var waNode_End = webannotator.misc.jsonToDOM(["WA_End", {"WA-id":id}, ""],
 										  clone);
 			spansEndArray[i].parentNode.insertBefore(waNode_End, spansEndArray[i].nextSibling);
 		}
@@ -1308,7 +1308,7 @@ webannotator.main = {
 		// Keep DTD file name
 		var element = window.content.document.getElementById("WA_data_element");
 		element.setAttribute("dtd", webannotator.dtdFileName);
-		window.showModalDialog("chrome://webannotator/content/options.xul",1); 
+		window.showModalDialog("chrome://webannotator/content/options.xul",1);
 	},
 
 
@@ -1326,7 +1326,7 @@ webannotator.main = {
 		try {
 			// write data to file then close output stream
 			var content = "";
-			
+
 			var i = 0;
 			var n;
 			var _local_colors = {};
@@ -1341,7 +1341,7 @@ webannotator.main = {
 			if (!webannotator.colors[webannotator.dtdFileName]) {
 				webannotator.colors[webannotator.dtdFileName] = _local_colors;
 			}
-			
+
 			var ostream = Components.classes["@mozilla.org/network/file-output-stream;1"].
 				createInstance(Components.interfaces.nsIFileOutputStream);
 			ostream.init(file, 2, 0x200, false);
@@ -1357,7 +1357,7 @@ webannotator.main = {
 	/**
 	 * Create a JS file according to the sections of current DTD file
 	 */
-	createJSON: function (){	
+	createJSON: function (){
 		var file;
 		var jsonElements;
 		var ostream;
@@ -1370,8 +1370,8 @@ webannotator.main = {
 				file.remove(false);
 			}
 			file.create(file.NORMAL_FILE_TYPE, 0666);
-		
-			jsonElements = JSON.stringify(webannotator.elements);  
+
+			jsonElements = JSON.stringify(webannotator.elements);
 
 			ostream = Components.classes["@mozilla.org/network/file-output-stream;1"].
 				createInstance(Components.interfaces.nsIFileOutputStream);
@@ -1382,12 +1382,12 @@ webannotator.main = {
 			// Save element constraints
 			file = webannotator.main.getPathEx();
 			file.append(webannotator.schemaConstraintsFileName);
-		
+
 			if (file.exists()) {
 				file.remove(false);
 			}
 			file.create(file.NORMAL_FILE_TYPE, 0666);
-			jsonElements = JSON.stringify(webannotator.elementConstraints);  
+			jsonElements = JSON.stringify(webannotator.elementConstraints);
 			ostream = Components.classes["@mozilla.org/network/file-output-stream;1"].
 				createInstance(Components.interfaces.nsIFileOutputStream);
 			ostream.init(file, 2, 0x200, false);
@@ -1397,12 +1397,12 @@ webannotator.main = {
 			// Save element colors
 			file = webannotator.main.getPathEx();
 			file.append(webannotator.schemaColorsFileName);
-		
+
 			if (file.exists()) {
 				file.remove(false);
 			}
 			file.create(file.NORMAL_FILE_TYPE, 0666);
-			jsonElements = JSON.stringify(webannotator.colors);  
+			jsonElements = JSON.stringify(webannotator.colors);
 			ostream = Components.classes["@mozilla.org/network/file-output-stream;1"].
 				createInstance(Components.interfaces.nsIFileOutputStream);
 			ostream.init(file, 2, 0x200, false);
@@ -1475,12 +1475,12 @@ webannotator.main = {
 
 		// Display the dialogue to confirm whether delete or not
 		var r = confirm(webannotator.bundle.GetStringFromName("waDeleteAnnotationConfirm") + id + "?");
-		
+
 		// Confirm to delete
 		if (r == true) {
 			delete webannotator.annotationNames[id];
 			delete webannotator.annotationTexts[id];
-			delete webannotator.annotationAttributes[id];	
+			delete webannotator.annotationAttributes[id];
 			webannotator.main.deleteIdWebAnnotator(id);
 		}
 		webannotator.main.receiveShowAnnotations();
@@ -1489,7 +1489,7 @@ webannotator.main = {
 	/**
 	 * Update schema files and options when preferences are modified
 	 */
-	receiveOptionsSet: function () {	
+	receiveOptionsSet: function () {
 		var eventElement = window.content.document.getElementById("WA_data_element");
 		// Get DTD file name
 		var dtd = eventElement.getAttribute("dtd");
@@ -1530,19 +1530,19 @@ webannotator.main = {
 
 		var link2 = webannotator.misc.jsonToDOM(["link", {type:"text/css",
 										   rel:"stylesheet",
-										   href:"chrome://webannotator/content/schemas/"+ webannotator.dtdFileName + ".css"}, 
+										   href:"chrome://webannotator/content/schemas/"+ webannotator.dtdFileName + ".css"},
 								  ""], content.document);
 		head.appendChild(link2);
 		webannotator.main.setSpanColorStyle(window.content.document, true);
 		webannotator.main.initVarMenu(dtd);
 	},
-	
+
 	/**
 	 * Start save and export operation when validated
 	 * by the XUL dialog box.
 	 */
 	receiveSaveAndExport: function () {
-		var eventElement = content.document.getElementById('WA_data_element'); 
+		var eventElement = content.document.getElementById('WA_data_element');
 		var saveFileName = eventElement.getAttribute("save");
 		var urisDirName = eventElement.getAttribute("exportDir");
 		var keepColors = eventElement.getAttribute("keepColors");
@@ -1553,7 +1553,7 @@ webannotator.main = {
 		// Export page
 		if (exportFileName !== null && exportFileName != "") {
 			webannotator.main.exportFile(exportFileName);
-		} 
+		}
 
 		var saveClone = content.document.cloneNode();
 
@@ -1563,7 +1563,7 @@ webannotator.main = {
 		} else {
 			webannotator.htmlWA.receiveWindowSwitchLinks(saveClone, true, false);
 		}
-		
+
 		// Activate colors
 		webannotator.main.setSpanColorStyle(saveClone, (keepColors == "true"));
 
@@ -1582,7 +1582,7 @@ webannotator.main = {
 		saveClone.body.setAttribute("onbeforeunload", "");
 
 		// Delete WA-specific scripts
-		var head = saveClone.getElementsByTagName("head")[0];	
+		var head = saveClone.getElementsByTagName("head")[0];
 		var toDelete = [];
 		var headChild;
 		for (headChild in head.childNodes) {
@@ -1599,7 +1599,7 @@ webannotator.main = {
 					toDelete.push(child);
 				}
 			}
-			
+
 		}
 		var elemToDelete;
 		for (elemToDelete in toDelete) {
@@ -1623,15 +1623,15 @@ webannotator.main = {
 	// 		// Export page
 	// 		if (exportFileName !== null && exportFileName != "") {
 	// 			webannotator.main.exportFile(exportFileName);
-	// 		} 
-			
+	// 		}
+
 	// 		// Reload the saved file
 	// 		webannotator.main.setModified(false);
 	// 		webannotator.main.deactivate();
 
 	// 		window.content.location = "file://" + saveFileName;
-			
-	// 		webannotator.main.locale_alert("waSavedOk");	
+
+	// 		webannotator.main.locale_alert("waSavedOk");
 	// 		webannotator.main.chooseFile(webannotator.currentSchemaId, false);
 	// 		webannotator.saveDone = true;
 	// 	}
@@ -1655,14 +1655,14 @@ webannotator.main = {
 				webannotator.maxId=Math.max(parseInt(id), webannotator.maxId);
 				subtypes = span.getAttribute("wa-subtypes");
 				type = span.getAttribute("wa-type");
-				
+
 				// Add style information if exists
 				var color = webannotator.htmlWA.getColor(webannotator.dtdFileName, type, -2);
 				if (color !== null) {
 					span.setAttribute("style", "color:" + color[0] + "; background-color:" + color[1] + ";");
 				}
-				
-				// add event listener for showing and hiding 
+
+				// add event listener for showing and hiding
 				// edit menus
 				span.addEventListener("mouseover", webannotator.main.showEdit);
 				span.addEventListener("mouseout", webannotator.main.hideEdit);
@@ -1673,14 +1673,14 @@ webannotator.main = {
 					webannotator.annotationTexts[id] = webannotator.main.getDeepText(span);
 				} else {
 					webannotator.annotationTexts[id] += webannotator.main.getDeepText(span);
-				} 
+				}
 				webannotator.annotationAttributes[id] = subtypes;
 			}
 		}
 	},
 
 	/**
-	 * Get text contained by an element, by recursively 
+	 * Get text contained by an element, by recursively
 	 * exploring child elements if any.
 	 */
 	getDeepText: function (elem) {
@@ -1721,7 +1721,7 @@ webannotator.main = {
 			document.getElementById("WebAnnotator_panelButton").label = webannotator.bundle.GetStringFromName("waShowPanel");
 		} else {
 			webannotator.main.showWAPanel(true);
-			webannotator.panelOn = true;		
+			webannotator.panelOn = true;
 			document.getElementById("WebAnnotator_panelButton").label = webannotator.bundle.GetStringFromName("waHidePanel");
 		}
 	},
@@ -1817,7 +1817,7 @@ webannotator.main = {
 					if (webannotator.annotationNames[annotationId] == type) {
 						selectedIds.push(annotationId);
 					}
-				}			
+				}
 			}
 			webannotator.main.updateTable(selectedIds, false);
 		}
@@ -1869,7 +1869,7 @@ webannotator.main = {
 
 				// Display the dialogue to confirm whether delete or not
 				var r = confirm(webannotator.bundle.GetStringFromName("waDeleteAnnotationConfirm") + id + "?");
-				
+
 				//Confirm to delete
 				if (r == true) {
 					delete webannotator.annotationNames[id];
@@ -1878,7 +1878,7 @@ webannotator.main = {
 					webannotator.main.deleteIdWebAnnotator(id);
 				}
 				webannotator.main.receiveShowAnnotations(event);
-			} 
+			}
 			// Edit button
 			else if (column.value["id"] == "WebAnnotator_edit") {
 				webannotator.htmlWA.setIdToEdit(id);
@@ -1888,41 +1888,37 @@ webannotator.main = {
 	},
 
 	/**
-	 * Show the delete/edit small popup 
+	 * Show the delete/edit small popup
 	 */
 	showEdit: function (e) {
 		webannotator.htmlWA.showEditAnnotationMenu(e, this.getAttribute('WA-id'));
 	},
 
 	/**
-	 * Hide the delete/edit small popup 
+	 * Hide the delete/edit small popup
 	 */
 	hideEdit: function (e) {
 		webannotator.htmlWA.hideEditAnnotationMenu();
 	},
 
-	/** 
-	 * Delete tag of underlined text with WA-id : id 
+	/**
+	 * Delete tag of underlined text with WA-id : id
 	 */
 	deleteIdWebAnnotator: function (id) {
 		var htmlDocument = content.document;
 		var spans = htmlDocument.getElementsByTagName("span");
 		var i;
 		for(i = spans.length -1; i >= 0 ; i--) {
-			if(spans[i].getAttribute("WA-id") == id) {
-				spans[i].removeAttribute("class");
-				spans[i].removeAttribute("WA-id");
-				spans[i].removeAttribute("WA-type");
-				spans[i].removeAttribute("id");
-				spans[i].removeAttribute("wa-subtypes");
-				spans[i].removeEventListener("mouseover", webannotator.main.showEdit);
-				spans[i].removeEventListener("mouseout", webannotator.main.hideEdit);
-
-				spans[i].removeAttribute("style");
+            var span = spans[i];
+			if(span.getAttribute("WA-id") == id) {
+                var fragment = document.createDocumentFragment();
+                while (span.firstChild) {
+                    fragment.appendChild(span.firstChild);
+                }
+                span.parentNode.replaceChild(fragment, span);
 			}
 		}
 	},
-
 
 	/**
 	 * Save function (save is different from export)
@@ -1941,7 +1937,7 @@ webannotator.main = {
 
 			// create component for dir writing
 			var dir = null;
-			if (urisDir !== null && urisDir != "") {	
+			if (urisDir !== null && urisDir != "") {
 				dir = Components.classes["@mozilla.org/file/local;1"]
 					.createInstance(Components.interfaces.nsIFile);
 				dir.initWithPath(urisDir);
@@ -1954,7 +1950,7 @@ webannotator.main = {
 //			var persistListener = new webannotator.main.PersistProgressListener();
 			var persist = Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"]
 				.createInstance(Components.interfaces.nsIWebBrowserPersist);
-			
+
 			persist.persistFlags = persist.PERSIST_FLAGS_REPLACE_EXISTING_FILES;
 //			persistListener.saveFileName = dest;
 //			if (exportFileName !== null) {
