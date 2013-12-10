@@ -1,0 +1,8 @@
+content	webannotator	chrome/content/	contentaccessible=yes
+skin    webannotator	classic/1.0		chrome/skin/
+locale	webannotator	fr			chrome/locale/fr/
+locale	webannotator	en			chrome/locale/en/
+locale	webannotator	en-US			chrome/locale/en/
+
+overlay chrome://browser/content/browser.xul chrome://webannotator/content/menuWebAnnotator.xul
+style   chrome://global/content/customizeToolbar.xul    chrome://webannotator/skin/wa.css
