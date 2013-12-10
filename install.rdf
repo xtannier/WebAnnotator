@@ -13,7 +13,7 @@
 	  <em:targetApplication>
 		<Description>
 		  <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
-		  <em:minVersion>3.5</em:minVersion>
+		  <em:minVersion>17.*</em:minVersion>
 		  <em:maxVersion>22.*</em:maxVersion>
 		</Description>
 	  </em:targetApplication>
@@ -26,6 +26,7 @@
 		</Description>
 	  </em:localized>
 	  <em:creator>Xavier Tannier</em:creator>
+	  <em:developer>Mikhail Korobov</em:developer>
 	  <em:developer>Thibault Baste</em:developer>
 	  <em:developer>jingjing Li</em:developer>
 	  <em:developer>Jialin Liu</em:developer>
