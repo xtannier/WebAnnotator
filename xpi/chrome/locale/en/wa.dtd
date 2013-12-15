@@ -7,7 +7,8 @@
 <!ENTITY wa.displayfiles "Display files">
 <!ENTITY wa.deleteschema "Delete Schema">
 <!ENTITY wa.import "Import new DTD">
-<!ENTITY wa.export "Save &amp; Export">
+<!ENTITY wa.saveandexport "Save &amp; Export">
+<!ENTITY wa.saveandexportas "Save &amp; Export as...">
 
 <!ENTITY wa.types "Types">
 <!ENTITY wa.subtypes "Subtypes">

@@ -7,7 +7,8 @@
 <!ENTITY wa.displayfiles "Afficher les fichiers">
 <!ENTITY wa.deleteschema "Effacer un sch&#233;ma">
 <!ENTITY wa.import "Importer une nouvelle DTD">
-<!ENTITY wa.export "Sauvegarder &amp; Exporter">
+<!ENTITY wa.saveandexport "Sauvegarder &amp; Exporter">
+<!ENTITY wa.saveandexportas "Sauvegarder &amp; Exporter sous...">
 
 <!ENTITY wa.types "Types">
 <!ENTITY wa.subtypes "Sous-types">

@@ -5,6 +5,9 @@ if (typeof webannotator == "undefined") {
 	var webannotator = {};
 };
 
+// Ask for confirmation when choosing "save as"
+webannotator.confirmBeforeSave = true;
+
 // File that contains all the names of the default files
 webannotator.fileSet = "webAnnotator.json";
 
@@ -388,9 +391,9 @@ webannotator.main = {
 			activeMenu.setAttribute("label", webannotator.bundle.GetStringFromName("waDeactivate"));
 			activeMenu.setAttribute("disabled", "false");
 		}
-		var exportMenu = document.getElementById("WebAnnotator_b_exportMenu");
-		if (exportMenu != null) {
-			exportMenu.setAttribute("disabled", "false");
+		var saveasMenu = document.getElementById("WebAnnotator_b_saveasMenu");
+		if (saveasMenu != null) {
+			saveasMenu.setAttribute("disabled", "false");
 		}
 
 		activeMenu = document.getElementById("WebAnnotator_t_activeMenu");
@@ -398,9 +401,9 @@ webannotator.main = {
 			activeMenu.setAttribute("label", webannotator.bundle.GetStringFromName("waDeactivate"));
 			activeMenu.setAttribute("disabled", "false");
 		}
-		exportMenu = document.getElementById("WebAnnotator_t_exportMenu");
-		if (exportMenu != null) {
-			exportMenu.setAttribute("disabled", "false");
+		saveasMenu = document.getElementById("WebAnnotator_t_saveasMenu");
+		if (saveasMenu != null) {
+			saveasMenu.setAttribute("disabled", "false");
 		}
 
 		var container = gBrowser.tabContainer;
@@ -527,13 +530,21 @@ webannotator.main = {
 
 			content.document.body.removeEventListener("mouseup", webannotator.htmlWA.openMenu, false);
 
-			var exportMenu = document.getElementById("WebAnnotator_b_exportMenu");
-			if (exportMenu != null) {
-				exportMenu.setAttribute("disabled", "true");
+			var saveMenu = document.getElementById("WebAnnotator_b_saveMenu");
+			if (saveMenu != null) {
+				saveMenu.setAttribute("disabled", "true");
 			}
-			exportMenu = document.getElementById("WebAnnotator_t_exportMenu");
-			if (exportMenu != null) {
-				exportMenu.setAttribute("disabled", "true");
+			var saveasMenu = document.getElementById("WebAnnotator_b_saveasMenu");
+			if (saveasMenu != null) {
+				saveasMenu.setAttribute("disabled", "true");
+			}
+			saveMenu = document.getElementById("WebAnnotator_t_saveMenu");
+			if (saveMenu != null) {
+				saveMenu.setAttribute("disabled", "true");
+			}
+			saveasMenu = document.getElementById("WebAnnotator_t_saveasMenu");
+			if (saveasMenu != null) {
+				saveasMenu.setAttribute("disabled", "true");
 			}
 			window.content.location.reload();
 			webannotator.linksEnable = true;
@@ -1615,27 +1626,14 @@ webannotator.main = {
 		}
 	},
 
-	// /**
-	//  * End of save & export operations
-	//  */
-	// endSave: function (saveFileName, exportFileName) {
-	// 	if (!webannotator.saveDone) {
-	// 		// Export page
-	// 		if (exportFileName !== null && exportFileName != "") {
-	// 			webannotator.main.exportFile(exportFileName);
-	// 		}
-
-	// 		// Reload the saved file
-	// 		webannotator.main.setModified(false);
-	// 		webannotator.main.deactivate();
-
-	// 		window.content.location = "file://" + saveFileName;
-
-	// 		webannotator.main.locale_alert("waSavedOk");
-	// 		webannotator.main.chooseFile(webannotator.currentSchemaId, false);
-	// 		webannotator.saveDone = true;
-	// 	}
-	// },
+	/**
+	 * Save immediately (no popup, no confirmation, no option edit)
+	 */
+	immediateSave: function() {
+		if (webannotator.confirmBeforeSave) {
+			webannotator.main.receiveSaveAndExport();
+		}
+	},
 
 	/**
 	 * Build annotations from WA spans in loaded document
@@ -1963,6 +1961,15 @@ webannotator.main = {
 //			webannotator.endSaveEvent = setTimeout(function() {webannotator.main.endSave(cleanDest, exportFileName)}, 1000);
 //			persist.saveDocument(doc, file, dir, null, persist.ENCODE_FLAGS_RAW, null);
 			persist.saveDocument(doc, file, dir, null, persist.ENCODE_FLAGS_RAW | persist.ENCODE_FLAGS_ENCODE_BASIC_ENTITIES, null);
+			
+			var saveMenu = document.getElementById("WebAnnotator_b_saveMenu");
+			if (saveMenu != null) {
+				saveMenu.setAttribute("disabled", "false");
+			}
+			saveMenu = document.getElementById("WebAnnotator_t_saveMenu");
+			if (saveMenu != null) {
+				saveMenu.setAttribute("disabled", "false");
+			}
 		}
 		catch(e) {
 			alert("Exception in save function: " + e);
