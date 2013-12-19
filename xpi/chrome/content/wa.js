@@ -102,10 +102,6 @@ webannotator.prefs = Components.classes["@mozilla.org/preferences-service;1"]
         .getService(Components.interfaces.nsIPrefService)
         .getBranch("extensions.webannotator.");
 
-//webannotator.prefs.setCharPref("lastsavefile", "");
-//webannotator.prefs.setCharPref("lastexportfile", "");
-//webannotator.prefs.setCharPref("lastsavedir", "");
-
 // Add event listeners
 document.addEventListener("webannotator.optionsSet", function(e) { webannotator.main.receiveOptionsSet(); return false;}, false);
 document.addEventListener("webannotator.resetExtension", function(e) { webannotator.main.deactivate(); return false;}, false);
