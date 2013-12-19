@@ -101,11 +101,13 @@ webannotator.gWABundle = Components.classes["@mozilla.org/intl/stringbundle;1"].
 webannotator.bundle = webannotator.gWABundle.createBundle("chrome://webannotator/locale/wa.properties");
 
 // Initialize preferences
-webannotator.prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+webannotator.prefs = Components.classes["@mozilla.org/preferences-service;1"]
+        .getService(Components.interfaces.nsIPrefService)
+        .getBranch("extensions.webannotator.");
 
-//webannotator.prefs.setCharPref("extensions.webannotator.lastsavefile", "");
-//webannotator.prefs.setCharPref("extensions.webannotator.lastexportfile", "");
-//webannotator.prefs.setCharPref("extensions.webannotator.lastsavedir", "");
+//webannotator.prefs.setCharPref("lastsavefile", "");
+//webannotator.prefs.setCharPref("lastexportfile", "");
+//webannotator.prefs.setCharPref("lastsavedir", "");
 
 // Add event listeners
 document.addEventListener("webannotator.optionsSet", function(e) { webannotator.main.receiveOptionsSet(); return false;}, false);

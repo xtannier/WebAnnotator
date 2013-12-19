@@ -80,35 +80,35 @@ webannotator.save = {
 		var urisToSave = document.getElementById("save_cb").checked;
 		var quitAfterSave = document.getElementById("quit_cb").checked;
 
-		webannotator.prefs.setBoolPref("extensions.webannotator.savecolors", saveColors);
-		webannotator.prefs.setBoolPref("extensions.webannotator.activatelinks", activateLinks);
-		webannotator.prefs.setBoolPref("extensions.webannotator.urisToSave", urisToSave);
-		webannotator.prefs.setBoolPref("extensions.webannotator.quitAfterSave", quitAfterSave);
+		webannotator.prefs.setBoolPref("savecolors", saveColors);
+		webannotator.prefs.setBoolPref("activatelinks", activateLinks);
+		webannotator.prefs.setBoolPref("urisToSave", urisToSave);
+		webannotator.prefs.setBoolPref("quitAfterSave", quitAfterSave);
 
 		// OK
 		// first, save in the local file
 		var saveFileName = document.getElementById('saveFileName').value;
 		var exportFileName = document.getElementById('exportFileName').value;
 		var exportDirName = document.getElementById('linkedDirName').value;
-		var eventElement = window.opener.content.document.getElementById('WA_data_element'); 
-		eventElement.setAttribute('save', saveFileName); 
-		eventElement.setAttribute('export', exportFileName); 
-		eventElement.setAttribute('exportDir', exportDirName); 
-		eventElement.setAttribute('keepColors', saveColors); 
-		eventElement.setAttribute('activateLinks', activateLinks); 
-		eventElement.setAttribute('quitAfterSave', quitAfterSave); 
+		var eventElement = window.opener.content.document.getElementById('WA_data_element');
+		eventElement.setAttribute('save', saveFileName);
+		eventElement.setAttribute('export', exportFileName);
+		eventElement.setAttribute('exportDir', exportDirName);
+		eventElement.setAttribute('keepColors', saveColors);
+		eventElement.setAttribute('activateLinks', activateLinks);
+		eventElement.setAttribute('quitAfterSave', quitAfterSave);
 
-		webannotator.prefs.setCharPref("extensions.webannotator.lastsavefile", saveFileName);
-		webannotator.prefs.setCharPref("extensions.webannotator.lastexportfile", exportFileName);
-		webannotator.prefs.setCharPref("extensions.webannotator.lastsavedir", exportDirName);
- 
-		var evt = window.opener.content.document.createEvent('Events'); 
-		evt.initEvent('webannotator.saveAndExport', true, true); 
+		webannotator.prefs.setCharPref("lastsavefile", saveFileName);
+		webannotator.prefs.setCharPref("lastexportfile", exportFileName);
+		webannotator.prefs.setCharPref("lastsavedir", exportDirName);
+
+		var evt = window.opener.content.document.createEvent('Events');
+		evt.initEvent('webannotator.saveAndExport', true, true);
 		eventElement.dispatchEvent(evt);
 		return true;
 	},
 
-	// on command for linked URIs checkbox 
+	// on command for linked URIs checkbox
 	checkDir: function (checkBox) {
 		// enable/disable fields
 		var desc1 = document.getElementById("descDir1");
@@ -150,10 +150,10 @@ webannotator.save = {
 		var urisToSave = false;
 		var quitAfterSave = false;
 		try {
-			saveColors = webannotator.prefs.getBoolPref("extensions.webannotator.savecolors");
-			activateLinks = webannotator.prefs.getBoolPref("extensions.webannotator.activatelinks");
-			urisToSave = webannotator.prefs.getBoolPref("extensions.webannotator.urisToSave");
-			quitAfterSave = webannotator.prefs.getBoolPref("extensions.webannotator.quitAfterSave");
+			saveColors = webannotator.prefs.getBoolPref("savecolors");
+			activateLinks = webannotator.prefs.getBoolPref("activatelinks");
+			urisToSave = webannotator.prefs.getBoolPref("urisToSave");
+			quitAfterSave = webannotator.prefs.getBoolPref("quitAfterSave");
 		} catch(ex) {
 		}
 		document.getElementById("color_cb").checked = saveColors;
@@ -163,14 +163,14 @@ webannotator.save = {
 		saveCB.checked = urisToSave;
 
 		// File names come from last file names
-		var eventElement = window.opener.content.document.getElementById('WA_data_element'); 
+		var eventElement = window.opener.content.document.getElementById('WA_data_element');
 		var saveFileName = null;
 		var exportDirName = null;
-		var exportFileName = null; 
+		var exportFileName = null;
 		try {
-			saveFileName = webannotator.prefs.getCharPref("extensions.webannotator.lastsavefile");  
-			exportDirName = webannotator.prefs.getCharPref("extensions.webannotator.lastsavedir");
-			exportFileName = webannotator.prefs.getCharPref("extensions.webannotator.lastexportfile");
+			saveFileName = webannotator.prefs.getCharPref("lastsavefile");
+			exportDirName = webannotator.prefs.getCharPref("lastsavedir");
+			exportFileName = webannotator.prefs.getCharPref("lastexportfile");
 		} catch(ex) {
 		}
 
