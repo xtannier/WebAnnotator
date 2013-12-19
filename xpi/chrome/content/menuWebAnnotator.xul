@@ -124,7 +124,7 @@
 		<button id="WebAnnotator_panelButton" label="&wa.hidepanel;"
 				oncommand="webannotator.main.switchPanel();"/>
 		<button id="WebAnnotator_options" label="&wa.options;"
-				oncommand="webannotator.main.options();"/>
+				oncommand="webannotator.main.showDTDOptionsDialog();"/>
 		<image src="chrome://webannotator/skin/wa_small_activated.png"/>
 		<separator class="groove" orient="vertical"/>
 	  </box>

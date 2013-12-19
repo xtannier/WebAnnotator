@@ -1180,7 +1180,7 @@ webannotator.main = {
 						if (!webannotator.session) {
 							ok = confirm(webannotator.bundle.GetStringFromName("waDTDLoadedConfirm"));
 							webannotator.main.activate();
-							webannotator.main.options();
+							webannotator.main.showDTDOptionsDialog();
 							if (!ok) {
 								webannotator.main.deactivate();
 							}
@@ -1315,7 +1315,7 @@ webannotator.main = {
 	/**
 	 * Show preferences/options menu
 	 */
-	options: function () {
+	showDTDOptionsDialog: function () {
 		// Keep DTD file name
 		var element = window.content.document.getElementById("WA_data_element");
 		element.setAttribute("dtd", webannotator.dtdFileName);
