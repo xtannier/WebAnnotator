@@ -1139,7 +1139,7 @@ webannotator.main = {
 						webannotator.dtdFileName = file.leafName;
 						var newSchema;
 						for (j=0; j < webannotator.schemas.length ; j++){
-							webannotator.schemas[j]["lastused"] == "0";
+							webannotator.schemas[j]["lastused"] = "0";
 						}
 						// replace
 						if (flag >= 0) {
