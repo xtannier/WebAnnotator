@@ -1548,18 +1548,42 @@ webannotator.main = {
 		webannotator.main.initVarMenu(dtd);
 	},
 
-	/**
+    /**
 	 * Start save and export operation when validated
 	 * by the XUL dialog box.
 	 */
 	receiveSaveAndExport: function () {
-		var eventElement = content.document.getElementById('WA_data_element');
-		var saveFileName = eventElement.getAttribute("save");
-		var urisDirName = eventElement.getAttribute("exportDir");
-		var keepColors = eventElement.getAttribute("keepColors");
-		var activateLinks = eventElement.getAttribute("activateLinks");
-		var exportFileName = eventElement.getAttribute("export");
-		var quitAfterSave = eventElement.getAttribute("quitAfterSave");
+        var eventElement = content.document.getElementById('WA_data_element');
+        webannotator.main.saveAndExport({
+             saveFileName: eventElement.getAttribute("save"),
+             urisDirName: eventElement.getAttribute("exportDir"),
+             keepColors: eventElement.getAttribute("keepColors") == "true",
+             activateLinks: eventElement.getAttribute("activateLinks") == "true",
+             exportFileName: eventElement.getAttribute("export"),
+             quitAfterSave: eventElement.getAttribute("quitAfterSave") == "true"
+        });
+	},
+
+
+	/**
+	 * Save immediately (no popup, no confirmation, no option edit)
+	 */
+	immediateSave: function() {
+		if (webannotator.confirmBeforeSave) {
+			webannotator.main.receiveSaveAndExport();
+		}
+	},
+
+    /**
+     * Save and export current annotation to a local file.
+     */
+    saveAndExport: function(options){
+		var saveFileName = options["saveFileName"];
+		var urisDirName = options["urisDirName"];
+		var keepColors = options["keepColors"];
+		var activateLinks = options["activateLinks"];
+		var exportFileName = options["exportFileName"];
+		var quitAfterSave = options["quitAfterSave"];
 
 		// Export page
 		if (exportFileName !== null && exportFileName != "") {
@@ -1569,14 +1593,14 @@ webannotator.main = {
 		var saveClone = content.document.cloneNode();
 
 		// Activate links
-		if (activateLinks == "true") {
+		if (activateLinks) {
 			webannotator.htmlWA.receiveWindowSwitchLinks(saveClone, true, true);
 		} else {
 			webannotator.htmlWA.receiveWindowSwitchLinks(saveClone, true, false);
 		}
 
 		// Activate colors
-		webannotator.main.setSpanColorStyle(saveClone, (keepColors == "true"));
+		webannotator.main.setSpanColorStyle(saveClone, keepColors);
 
 		// Delete WA communication element in HTML page
 		var element = saveClone.getElementById("WA_data_element");
@@ -1618,22 +1642,13 @@ webannotator.main = {
 		}
 
 		// Save current page
-		webannotator.main.save(saveClone, saveFileName, urisDirName)
+		webannotator.main.save(saveClone, saveFileName, urisDirName);
 		webannotator.main.setModified(false);
 
-		if (quitAfterSave == "true") {
+		if (quitAfterSave) {
 			webannotator.main.deactivate();
 		}
-	},
-
-	/**
-	 * Save immediately (no popup, no confirmation, no option edit)
-	 */
-	immediateSave: function() {
-		if (webannotator.confirmBeforeSave) {
-			webannotator.main.receiveSaveAndExport();
-		}
-	},
+    },
 
 	/**
 	 * Build annotations from WA spans in loaded document
@@ -1961,7 +1976,7 @@ webannotator.main = {
 //			webannotator.endSaveEvent = setTimeout(function() {webannotator.main.endSave(cleanDest, exportFileName)}, 1000);
 //			persist.saveDocument(doc, file, dir, null, persist.ENCODE_FLAGS_RAW, null);
 			persist.saveDocument(doc, file, dir, null, persist.ENCODE_FLAGS_RAW | persist.ENCODE_FLAGS_ENCODE_BASIC_ENTITIES, null);
-			
+
 			var saveMenu = document.getElementById("WebAnnotator_b_saveMenu");
 			if (saveMenu != null) {
 				saveMenu.setAttribute("disabled", "false");
