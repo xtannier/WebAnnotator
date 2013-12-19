@@ -882,7 +882,7 @@ webannotator.main = {
 	/**
 	 * Delete the schema file corresponding to specifed id
 	 */
-	deleteFile: function (id) {
+	deleteSchemaFile: function (id) {
 		var schema = webannotator.schemas[id];
 		var label = schema["name"];
 		var fileName = schema["filename"];
@@ -997,7 +997,7 @@ webannotator.main = {
 					var menuitemDelete = b_menu2.appendItem(schema["name"], i);
 					menuitemDelete.setAttribute("id", "WebAnnotator_b_deleteMenu" + i);
 					menuitemDelete.setAttribute("number", i);
-					menuitemDelete.addEventListener("command", function(e) {webannotator.main.deleteFile(this.getAttribute('number'))});
+					menuitemDelete.addEventListener("command", function(e) {webannotator.main.deleteSchemaFile(this.getAttribute('number'))});
 					if (schema["lastused"] == 1 && !webannotator.session) {
 						b_activeMenu.setAttribute("label", webannotator.bundle.GetStringFromName("waActivate") + " " + schema["name"]);
 						b_activeMenu.setAttribute("number", i);
@@ -1038,7 +1038,7 @@ webannotator.main = {
 					var menuitemDelete = t_menu2.appendItem(schema["name"], i);
 					menuitemDelete.setAttribute("id", "WebAnnotator_t_deleteMenu" + i);
 					menuitemDelete.setAttribute("number", i);
-					menuitemDelete.addEventListener("command", function(e) {webannotator.main.deleteFile(this.getAttribute('number'))});
+					menuitemDelete.addEventListener("command", function(e) {webannotator.main.deleteSchemaFile(this.getAttribute('number'))});
 					if (schema["lastused"] == 1 && !webannotator.session) {
 						t_activeMenu.setAttribute("label", webannotator.bundle.GetStringFromName("waActivate") + " " + schema["name"]);
 						t_activeMenu.setAttribute("number", i);
