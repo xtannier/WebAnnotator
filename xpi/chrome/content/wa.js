@@ -991,7 +991,7 @@ webannotator.main = {
 					var menuitemChoose = b_menu1.appendItem(schema["name"], i);
 					menuitemChoose.setAttribute("id", "WebAnnotator_b_chooseMenu" + i);
 					menuitemChoose.setAttribute("number", i);
-					menuitemChoose.addEventListener("command", function(e) {webannotator.main.chooseFile(this.getAttribute('number'), true)});
+					menuitemChoose.addEventListener("command", function(e) {webannotator.main.chooseDTDFile(this.getAttribute('number'), true)});
 					var menuitemDelete = b_menu2.appendItem(schema["name"], i);
 					menuitemDelete.setAttribute("id", "WebAnnotator_b_deleteMenu" + i);
 					menuitemDelete.setAttribute("number", i);
@@ -1032,7 +1032,7 @@ webannotator.main = {
 					var menuitemChoose = t_menu1.appendItem(schema["name"], i);
 					menuitemChoose.setAttribute("id", "WebAnnotator_t_chooseMenu" + i);
 					menuitemChoose.setAttribute("number", i);
-					menuitemChoose.addEventListener("command", function(e) {webannotator.main.chooseFile(this.getAttribute('number'), true)});
+					menuitemChoose.addEventListener("command", function(e) {webannotator.main.chooseDTDFile(this.getAttribute('number'), true)});
 					var menuitemDelete = t_menu2.appendItem(schema["name"], i);
 					menuitemDelete.setAttribute("id", "WebAnnotator_t_deleteMenu" + i);
 					menuitemDelete.setAttribute("number", i);
@@ -1063,14 +1063,14 @@ webannotator.main = {
 		if (webannotator.session) {
 			webannotator.main.deactivate();
 		} else {
-			webannotator.main.chooseFile(id, false);
+			webannotator.main.chooseDTDFile(id, false);
 		}
 	},
 
 	/**
 	 * Chooses the DTD file for strating an annotation session
 	 */
-	chooseFile: function (id, fromManualLoad) {
+	chooseDTDFile: function (id, fromManualLoad) {
 		// If not on a web page (for example, add-on page)
 		if (typeof(window.content.document.body) == 'undefined') {
 			webannotator.main.locale_alert("waNoAnnotation");
@@ -1107,7 +1107,7 @@ webannotator.main = {
 	/**
 	 * Import a DTD file describing an annotation schema
 	 */
-	importFile: function () {
+	importDTDFile: function () {
 		// if an annotation session has already started
 		// refuse
 		if (webannotator.session) {

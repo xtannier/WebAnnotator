@@ -9,15 +9,15 @@
   <script type="text/javascript" src="popups.js"></script>
   <script type="text/javascript" src="options.js"></script>
   <script type="text/javascript" src="highlighter.js"></script>
- 
+
   <!-- Extend Firefox menu -->
   <toolbarpalette id="BrowserToolbarPalette">
-	<toolbarbutton id="WebAnnotator_button" type="menu" 
+	<toolbarbutton id="WebAnnotator_button" type="menu"
 				   class="toolbarbutton-1 chromeclass-toolbar-additional"
 				   label="&wa.name;" tooltiptext="&wa.name;"
 				   oncommand="webannotator.main.updateMenus(true, false)">
 	  <menupopup id="WebAnnotator_menu_ButtonPopup">
-		<menuitem id="WebAnnotator_b_importMenu" oncommand="webannotator.main.importFile()"/>
+		<menuitem id="WebAnnotator_b_importMenu" oncommand="webannotator.main.importDTDFile()"/>
 		<menu id="WebAnnotator_b_chooseMenu" >
 		  <menupopup id="WebAnnotator_b_chooseMenu_pop" >
 			<menuitem id="WebAnnotator_b_chooseMenu1"/>
@@ -42,7 +42,7 @@
   <menupopup id="menu_ToolsPopup">
 	<menu class="menu-iconic" image="chrome://webannotator/skin/wa_small_activated.png" id="WebAnnotator-menu">
 	  <menupopup id="WebAnnotator_t_menu_pop">
-		<menuitem id="WebAnnotator_t_importMenu" oncommand="webannotator.main.importFile()"/>
+		<menuitem id="WebAnnotator_t_importMenu" oncommand="webannotator.main.importDTDFile()"/>
 		<menu id="WebAnnotator_t_chooseMenu" >
 		  <menupopup id="WebAnnotator_t_chooseMenu_pop" >
 			<menuitem id="WebAnnotator_t_chooseMenu1"/>
@@ -93,7 +93,7 @@
 
     <!-- WA panel -->
     <vbox minheight="3ex" id="appcontent">
-      <splitter id="WebAnnotator_waContentSplitter" collapsed="true"/>	  
+      <splitter id="WebAnnotator_waContentSplitter" collapsed="true"/>
       <vbox id="WebAnnotator_waContentBox" collapsed="true" persist="height">
 		<tree id="WebAnnotator_waTable" onkeyup="webannotator.main.selectTree(this)" onclick="webannotator.main.clickTree(this, event)" editable="true" flex="1">
 		  <treecols>
