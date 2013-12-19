@@ -31,8 +31,8 @@
 		<menuseparator/>
 		<menuitem id="WebAnnotator_b_activeMenu" oncommand=""/>
 		<menuseparator/>
-		<menuitem id="WebAnnotator_b_saveMenu" disabled="true" oncommand="webannotator.main.immediateSave()"/>
-		<menuitem id="WebAnnotator_b_saveasMenu" disabled="true" oncommand="window.showModalDialog('chrome://webannotator/content/save.xul',1)"/>
+		<menuitem id="WebAnnotator_b_saveasMenu" disabled="true" oncommand="webannotator.main.runSaveAs()"/>
+		<menuitem id="WebAnnotator_b_exportasMenu" disabled="true" oncommand="webannotator.main.runExportAs()"/>
 		<menuseparator/>
 		<menuitem id="WebAnnotator_b_descriptionMenu" oncommand="window.showModalDialog('chrome://webannotator/content/description.xul',1)"/>
 	  </menupopup>
@@ -56,8 +56,8 @@
 		<menuseparator/>
 		<menuitem id="WebAnnotator_t_activeMenu"/>
 		<menuseparator/>
-		<menuitem id="WebAnnotator_t_saveMenu" disabled="true" oncommand="webannotator.main.immediateSave()"/>
-		<menuitem id="WebAnnotator_t_saveasMenu" disabled="true" oncommand="window.showModalDialog('chrome://webannotator/content/save.xul',1)"/>
+		<menuitem id="WebAnnotator_t_saveasMenu" disabled="true" oncommand="webannotator.main.runSaveAs()"/>
+		<menuitem id="WebAnnotator_t_exportasMenu" disabled="true" oncommand="webannotator.main.runExportAs()"/>
 		<menuseparator/>
 		<menuitem id="WebAnnotator_t_descriptionMenu" oncommand="window.showModalDialog('chrome://webannotator/content/description.xul',1)"/>
 	  </menupopup>
@@ -75,8 +75,8 @@
 	<menuitem id="WebAnnotator_t_deleteMenu2" label="file1"/>
 	<menuitem id="WebAnnotator_t_deleteMenu3" label="file2"/>
 	<menuitem id="WebAnnotator_t_importMenu" label="&wa.import;"/>
-	<menuitem id="WebAnnotator_t_saveasMenu" label="&wa.saveandexportas;"/>
-	<menuitem id="WebAnnotator_t_saveMenu" label="&wa.saveandexport;"/>
+	<menuitem id="WebAnnotator_t_saveasMenu" label="&wa.saveas;"/>
+	<menuitem id="WebAnnotator_t_exportasMenu" label="&wa.exportas;"/>
 	<menuitem id="WebAnnotator_t_descriptionMenu" label="&wa.about; &wa.name;"/>
 
 	<menu id="WebAnnotator_b_activeMenu" label="&wa.activatelastused;"/>
@@ -87,8 +87,8 @@
 	<menuitem id="WebAnnotator_b_deleteMenu2" label="file1"/>
 	<menuitem id="WebAnnotator_b_deleteMenu3" label="file2"/>
 	<menuitem id="WebAnnotator_b_importMenu" label="&wa.import;"/>
-	<menuitem id="WebAnnotator_b_saveasMenu" label="&wa.saveandexportas;"/>
-	<menuitem id="WebAnnotator_b_saveMenu" label="&wa.saveandexport;"/>
+	<menuitem id="WebAnnotator_b_saveasMenu" label="&wa.saveas;"/>
+	<menuitem id="WebAnnotator_b_exportasMenu" label="&wa.exportas;"/>
 	<menuitem id="WebAnnotator_b_descriptionMenu" label="&wa.about; &wa.name;"/>
 
     <!-- WA panel -->

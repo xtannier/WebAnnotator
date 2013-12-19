@@ -5,9 +5,6 @@ if (typeof webannotator == "undefined") {
 	var webannotator = {};
 };
 
-// Ask for confirmation when choosing "save as"
-webannotator.confirmBeforeSave = true;
-
 // File that contains all the names of the default files
 webannotator.fileSet = "webAnnotator.json";
 
@@ -111,7 +108,6 @@ webannotator.prefs = Components.classes["@mozilla.org/preferences-service;1"]
 
 // Add event listeners
 document.addEventListener("webannotator.optionsSet", function(e) { webannotator.main.receiveOptionsSet(); return false;}, false);
-document.addEventListener("webannotator.saveAndExport", function(e) { webannotator.main.receiveSaveAndExport(); return false;}, false);
 document.addEventListener("webannotator.resetExtension", function(e) { webannotator.main.deactivate(); return false;}, false);
 
 webannotator.main = {
@@ -388,29 +384,28 @@ webannotator.main = {
 	 */
 	activateMenus: function () {
 		document.getElementById("WebAnnotator_waOptions").collapsed = false;
-		var activeMenu = document.getElementById("WebAnnotator_b_activeMenu");
-		if (activeMenu != null) {
-			activeMenu.setAttribute("label", webannotator.bundle.GetStringFromName("waDeactivate"));
-			activeMenu.setAttribute("disabled", "false");
-		}
-		var saveasMenu = document.getElementById("WebAnnotator_b_saveasMenu");
-		if (saveasMenu != null) {
-			saveasMenu.setAttribute("disabled", "false");
-		}
 
-		activeMenu = document.getElementById("WebAnnotator_t_activeMenu");
-		if (activeMenu != null) {
-			activeMenu.setAttribute("label", webannotator.bundle.GetStringFromName("waDeactivate"));
-			activeMenu.setAttribute("disabled", "false");
-		}
-		saveasMenu = document.getElementById("WebAnnotator_t_saveasMenu");
-		if (saveasMenu != null) {
-			saveasMenu.setAttribute("disabled", "false");
-		}
+        webannotator.main.activateMenuItem("WebAnnotator_b_activeMenu", "waDeactivate");
+        webannotator.main.activateMenuItem("WebAnnotator_b_exportasMenu");
+        webannotator.main.activateMenuItem("WebAnnotator_b_saveasMenu");
+
+        webannotator.main.activateMenuItem("WebAnnotator_t_activeMenu", "waDeactivate");
+        webannotator.main.activateMenuItem("WebAnnotator_t_exportasMenu");
+        webannotator.main.activateMenuItem("WebAnnotator_t_saveasMenu");
 
 		var container = gBrowser.tabContainer;
 		container.addEventListener("TabSelect", webannotator.main.tabSelect, false);
 	},
+
+    activateMenuItem: function (id, labelName){
+        var menuItem = document.getElementById(id);
+        if (menuItem != null) {
+            menuItem.setAttribute("disabled", "false");
+            if (labelName != null) {
+                menuItem.setAttribute("label", webannotator.bundle.GetStringFromName(labelName));
+            }
+        }
+    },
 
 	/**
 	 * When an already annotated page is reloaded,
@@ -509,57 +504,54 @@ webannotator.main = {
 			// Display the dialogue to confirm whether delete or not
 			r = confirm(webannotator.bundle.GetStringFromName("waDeactivateConfirm"));
 		}
+        if (!r){
+            return;
+        }
 
 		// Confirm
-		if (r == true) {
-			webannotator.session = false;
-			webannotator.main.showWAPanel(false);
+        webannotator.session = false;
+        webannotator.main.showWAPanel(false);
 
-			document.getElementById("WebAnnotator_waOptions").collapsed = true;
-			webannotator.dtdFileName = "";
-			webannotator.main.updateMenus(true, true);
-			// Erase annotations
-			webannotator.annotationNames = {};
-			webannotator.annotationTexts = {};
-			webannotator.annotationAttributes = {};
-			var selectedIds = [];
-			webannotator.main.updateTable(selectedIds, true);
+        document.getElementById("WebAnnotator_waOptions").collapsed = true;
+        webannotator.dtdFileName = "";
+        webannotator.main.updateMenus(true, true);
+        // Erase annotations
+        webannotator.annotationNames = {};
+        webannotator.annotationTexts = {};
+        webannotator.annotationAttributes = {};
+        var selectedIds = [];
+        webannotator.main.updateTable(selectedIds, true);
 
-			// event listeners cannot be registered for the onbeforeunload event with
-			// the addEventListener and attachEvent methods
-			// (only Safari and Google Chrome support it).
-			content.document.body.setAttribute("onbeforeunload", "");
+        // event listeners cannot be registered for the onbeforeunload event with
+        // the addEventListener and attachEvent methods
+        // (only Safari and Google Chrome support it).
+        content.document.body.setAttribute("onbeforeunload", "");
 
-			content.document.body.removeEventListener("mouseup", webannotator.htmlWA.openMenu, false);
+        content.document.body.removeEventListener("mouseup", webannotator.htmlWA.openMenu, false);
 
-			var saveMenu = document.getElementById("WebAnnotator_b_saveMenu");
-			if (saveMenu != null) {
-				saveMenu.setAttribute("disabled", "true");
-			}
-			var saveasMenu = document.getElementById("WebAnnotator_b_saveasMenu");
-			if (saveasMenu != null) {
-				saveasMenu.setAttribute("disabled", "true");
-			}
-			saveMenu = document.getElementById("WebAnnotator_t_saveMenu");
-			if (saveMenu != null) {
-				saveMenu.setAttribute("disabled", "true");
-			}
-			saveasMenu = document.getElementById("WebAnnotator_t_saveasMenu");
-			if (saveasMenu != null) {
-				saveasMenu.setAttribute("disabled", "true");
-			}
-			window.content.location.reload();
-			webannotator.linksEnable = true;
-			// remove all event listeners
-			webannotator.main.setModified(false);
-			var container = gBrowser.tabContainer;
-			container.removeEventListener("TabSelect", webannotator.main.tabSelect, false);
+        webannotator.main.deactivateMenuItem("WebAnnotator_b_saveasMenu");
+        webannotator.main.deactivateMenuItem("WebAnnotator_b_exportasMenu");
 
-			webannotator.main.enableAddOn();
-			webannotator.noLoad = true;
-		} else {
-		}
+        webannotator.main.deactivateMenuItem("WebAnnotator_t_saveasMenu");
+        webannotator.main.deactivateMenuItem("WebAnnotator_t_exportasMenu");
+
+        window.content.location.reload();
+        webannotator.linksEnable = true;
+        // remove all event listeners
+        webannotator.main.setModified(false);
+        var container = gBrowser.tabContainer;
+        container.removeEventListener("TabSelect", webannotator.main.tabSelect, false);
+
+        webannotator.main.enableAddOn();
+        webannotator.noLoad = true;
 	},
+
+    deactivateMenuItem: function(id){
+        var menuItem = document.getElementById(id);
+        if (menuItem != null) {
+            menuItem.setAttribute("disabled", "true");
+        }
+    },
 
 	/**
 	 * Show or hide the bottom panel of the addon
@@ -1207,7 +1199,7 @@ webannotator.main = {
 	/**
 	 * Export the current annotated page ("export" is different from "save")
 	 */
-	exportFile: function (fileName) {
+	exportAnnotations: function (fileName) {
 		var clone = window.content.document.cloneNode();
 //		var del = [];
 		var spansStartArray = [];
@@ -1311,7 +1303,7 @@ webannotator.main = {
 			}
 		}
 		// Save the page
-		webannotator.main.save(clone, fileName, null);
+		webannotator.main.save(clone, fileName);
 	},
 
 	/**
@@ -1551,58 +1543,108 @@ webannotator.main = {
 	},
 
     /**
-	 * Start save and export operation when validated
-	 * by the XUL dialog box.
-	 */
-	receiveSaveAndExport: function () {
-        var eventElement = content.document.getElementById('WA_data_element');
-        webannotator.main.saveAndExport({
-             saveFileName: eventElement.getAttribute("save"),
-             urisDirName: eventElement.getAttribute("exportDir"),
-             keepColors: eventElement.getAttribute("keepColors") == "true",
-             activateLinks: eventElement.getAttribute("activateLinks") == "true",
-             exportFileName: eventElement.getAttribute("export"),
-             quitAfterSave: eventElement.getAttribute("quitAfterSave") == "true"
+     * Start "Save as" dialog and execute a callback on success
+     */
+    startSaveAsDialog: function(fileName, dialogTitle, onSuccess){
+        var nsIFilePicker = Components.interfaces.nsIFilePicker;
+        var filePicker = Components.classes["@mozilla.org/filepicker;1"]
+                 .createInstance(nsIFilePicker);
+
+        filePicker.init(window, dialogTitle, nsIFilePicker.modeSave);
+        filePicker.appendFilters(nsIFilePicker.filterAll | nsIFilePicker.filterHTML);
+        filePicker.defaultExtension = 'html';
+        filePicker.defaultString = fileName;
+
+        var rv = filePicker.show();
+        if (rv == nsIFilePicker.returnOK || rv == nsIFilePicker.returnReplace) {
+            onSuccess(filePicker.file);
+        }
+    },
+
+    /**
+     * "Save as..." handler
+     */
+    runSaveAs: function(){
+        var filename = webannotator.main.suggestFilename();
+        var title = "Save current annotation as..";
+        webannotator.main.startSaveAsDialog(filename, title, function(file){
+            webannotator.main.saveAnnotations(file.path);
         });
-	},
+    },
 
+    /**
+     * "Export as..." handler
+     */
+    runExportAs: function(){
+        var filename = webannotator.main.suggestExportFilename();
+        var title = "Export current annotation as..";
+        webannotator.main.startSaveAsDialog(filename, title, function(file){
+            webannotator.main.exportAnnotations(file.path);
+        })
+    },
 
-	/**
-	 * Save immediately (no popup, no confirmation, no option edit)
-	 */
-	immediateSave: function() {
-		if (webannotator.confirmBeforeSave) {
-			webannotator.main.receiveSaveAndExport();
-		}
-	},
+    /**
+     * Suggest a filename based on page's URL and title
+     */
+    suggestFilename: function(){
+        // if local file is opened, use its filename by default
+        var location = content.window.location;
+        if (location.protocol == 'file:') {
+            return decodeURIComponent(location.pathname.split('/').pop());
+        }
+
+        // use title otherwise
+        var title = content.document.title;
+        if (title.endsWith(".html") || title.endsWith(".htm")){
+            return title;
+        }
+        return title + ".html";
+    },
+
+    /**
+     * Suggest a filename for file export based on page's URL and title
+     */
+    suggestExportFilename: function(){
+        // replace <name>.html with <name>.export.html
+        var name = webannotator.main.suggestFilename();
+        if (!name.match(/\.html?$/)){
+            return name;
+        }
+        return webannotator.main.addExportSuffix(name, false);
+    },
+
+    /**
+     * Replace ".html" with ".export.html"
+     */
+    addExportSuffix: function(filename, force){
+        if (!force && filename.match(/\.export\.html?$/)){
+            return filename;
+        }
+        return filename.replace(/\.html?$/, ".export.html");
+    },
+
 
     /**
      * Save and export current annotation to a local file.
      */
-    saveAndExport: function(options){
-		var saveFileName = options["saveFileName"];
-		var urisDirName = options["urisDirName"];
-		var keepColors = options["keepColors"];
-		var activateLinks = options["activateLinks"];
-		var exportFileName = options["exportFileName"];
-		var quitAfterSave = options["quitAfterSave"];
-
-		// Export page
-		if (exportFileName !== null && exportFileName != "") {
-			webannotator.main.exportFile(exportFileName);
-		}
+    saveAnnotations: function(saveFileName){
+        if (webannotator.prefs.getBoolPref("autoExport")) {
+    		// Export page
+            var exportFileName = webannotator.main.addExportSuffix(saveFileName, true);
+            webannotator.main.exportAnnotations(exportFileName);
+        }
 
 		var saveClone = content.document.cloneNode();
 
 		// Activate links
-		if (activateLinks) {
+		if (webannotator.prefs.getBoolPref("activatelinks")) {
 			webannotator.htmlWA.receiveWindowSwitchLinks(saveClone, true, true);
 		} else {
 			webannotator.htmlWA.receiveWindowSwitchLinks(saveClone, true, false);
 		}
 
 		// Activate colors
-		webannotator.main.setSpanColorStyle(saveClone, keepColors);
+		webannotator.main.setSpanColorStyle(saveClone, webannotator.prefs.getBoolPref("savecolors"));
 
 		// Delete WA communication element in HTML page
 		var element = saveClone.getElementById("WA_data_element");
@@ -1644,10 +1686,10 @@ webannotator.main = {
 		}
 
 		// Save current page
-		webannotator.main.save(saveClone, saveFileName, urisDirName);
+		webannotator.main.save(saveClone, saveFileName);
 		webannotator.main.setModified(false);
 
-		if (quitAfterSave) {
+		if (webannotator.prefs.getBoolPref("quitAfterSave")) {
 			webannotator.main.deactivate();
 		}
     },
@@ -1935,10 +1977,36 @@ webannotator.main = {
 		}
 	},
 
+
+    /**
+     * Add <base> html tag to document
+     */
+    addBaseTag: function(doc, baseUrl){
+        var base = doc.getElementsByTagName('base')[0];
+        if (base){
+            // don't touch base if it exists
+            // base.parentNode.removeChild(base);
+        }
+        else{
+            base = doc.createElement('base');
+            base.href = baseUrl;
+        }
+
+        var head = doc.getElementsByTagName('head')[0];
+        if (head){
+            head.insertBefore(base, head.firstElementChild);
+        }
+        else {
+            var body = doc.getElementsByTagName('body')[0];
+            body.insertBefore(base, body.firstElementChild);
+        }
+    },
+
 	/**
 	 * Save function (save is different from export)
 	 */
-	save: function (doc, dest, urisDir) {
+	save: function (doc, dest) {
+        var exportFormat = webannotator.prefs.getCharPref("saveformat");
 		try {
 			// create component for file writing
 			var file = Components.classes["@mozilla.org/file/local;1"]
@@ -1952,15 +2020,16 @@ webannotator.main = {
 
 			// create component for dir writing
 			var dir = null;
-			if (urisDir !== null && urisDir != "") {
+            if (exportFormat == 'complete'){
+                var resourcesDir = dest.replace(/\.html?$/, "") + "_files";
 				dir = Components.classes["@mozilla.org/file/local;1"]
 					.createInstance(Components.interfaces.nsIFile);
-				dir.initWithPath(urisDir);
+				dir.initWithPath(resourcesDir);
 				// if dir does not exist, create it
 				if (!dir.exists()) {
 					dir.create(dir.DIRECTORY_TYPE, 0700);
 				}
-			}
+            }
 
 //			var persistListener = new webannotator.main.PersistProgressListener();
 			var persist = Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"]
@@ -1977,16 +2046,18 @@ webannotator.main = {
 //			var cleanDest = dest.replace(/\\/g,"\\\\");
 //			webannotator.endSaveEvent = setTimeout(function() {webannotator.main.endSave(cleanDest, exportFileName)}, 1000);
 //			persist.saveDocument(doc, file, dir, null, persist.ENCODE_FLAGS_RAW, null);
-			persist.saveDocument(doc, file, dir, null, persist.ENCODE_FLAGS_RAW | persist.ENCODE_FLAGS_ENCODE_BASIC_ENTITIES, null);
 
-			var saveMenu = document.getElementById("WebAnnotator_b_saveMenu");
-			if (saveMenu != null) {
-				saveMenu.setAttribute("disabled", "false");
-			}
-			saveMenu = document.getElementById("WebAnnotator_t_saveMenu");
-			if (saveMenu != null) {
-				saveMenu.setAttribute("disabled", "false");
-			}
+            var flags = persist.ENCODE_FLAGS_RAW | persist.ENCODE_FLAGS_ENCODE_BASIC_ENTITIES;
+            if (exportFormat == 'absolute_links'){
+                flags = flags | persist.ENCODE_FLAGS_ABSOLUTE_LINKS;
+            }
+
+            if (exportFormat == 'add_base'){
+                var baseUrl = content.window.location.protocol + "//" + content.window.location.host + "/";
+                webannotator.main.addBaseTag(doc, baseUrl);
+            }
+
+			persist.saveDocument(doc, file, dir, null, flags, null);
 		}
 		catch(e) {
 			alert("Exception in save function: " + e);
@@ -1995,7 +2066,7 @@ webannotator.main = {
 
 	locale_alert: function (messageId) {
 		alert(webannotator.bundle.GetStringFromName(messageId));
-	},
+	}
 
 };
 

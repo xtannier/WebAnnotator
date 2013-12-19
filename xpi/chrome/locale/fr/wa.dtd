@@ -9,6 +9,8 @@
 <!ENTITY wa.import "Importer une nouvelle DTD">
 <!ENTITY wa.saveandexport "Sauvegarder &amp; Exporter">
 <!ENTITY wa.saveandexportas "Sauvegarder &amp; Exporter sous...">
+<!ENTITY wa.saveas "Sauvegarder sous...">
+<!ENTITY wa.exportas "Exporter sous...">
 
 <!ENTITY wa.types "Types">
 <!ENTITY wa.subtypes "Sous-types">
