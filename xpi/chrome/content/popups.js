@@ -16,7 +16,7 @@ webannotator.popups = {
 	show_popup: function (id, evt) {
 		var popup = content.document.getElementById(id);
 		// hide other popups
-		for (popupid in webannotator.hidden) {
+		for (var popupid in webannotator.hidden) {
 			if (webannotator.hidden[popupid]) {
 				webannotator.popups.hide_popup(popupid);
 			}
