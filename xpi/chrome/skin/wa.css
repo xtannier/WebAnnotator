@@ -14,4 +14,6 @@
     list-style-image: url("chrome://webannotator/skin/wa_small_a.png");
 }
 
-
+#WebAnnotator_activeButton.active {
+    list-style-image: url("chrome://webannotator/skin/wa_small_a2.png");
+}

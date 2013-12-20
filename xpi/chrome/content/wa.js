@@ -169,6 +169,8 @@ webannotator.main = {
 			webannotator.main.buildAnnotations();
 			webannotator.main.activateHTMLDocument();
 
+            document.getElementById('WebAnnotator_activeButton').classList.add("active");
+
 			webannotator.session = true;
 
 			// Add elements concerning colors
@@ -560,6 +562,8 @@ webannotator.main = {
 
         webannotator.main.deactivateMenuItem("WebAnnotator_saveasButton");
         webannotator.main.deactivateMenuItem("WebAnnotator_titleButton");
+
+        document.getElementById('WebAnnotator_activeButton').classList.remove("active");
 
         window.content.location.reload();
         webannotator.linksEnable = true;
