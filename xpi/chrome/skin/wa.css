@@ -10,7 +10,7 @@
     list-style-image: url("chrome://webannotator/skin/wa_small_s.png");
 }
 
-#WebAnnotator_startAnnotationButton {
+#WebAnnotator_activeButton {
     list-style-image: url("chrome://webannotator/skin/wa_small_a.png");
 }
 

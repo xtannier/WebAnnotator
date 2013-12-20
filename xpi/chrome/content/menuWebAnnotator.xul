@@ -38,7 +38,7 @@
 	  </menupopup>
 	</toolbarbutton>
 
-    <toolbarbutton id="WebAnnotator_startAnnotationButton" class="toolbarbutton-1 chromeclass-toolbar-additional"
+    <toolbarbutton id="WebAnnotator_activeButton" class="toolbarbutton-1 chromeclass-toolbar-additional"
       label="Start annotation" tooltiptext="Start annotation"
       oncommand=""/>
 

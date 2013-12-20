@@ -389,6 +389,7 @@ webannotator.main = {
         webannotator.main.activateMenuItem("WebAnnotator_t_exportasMenu");
         webannotator.main.activateMenuItem("WebAnnotator_t_saveasMenu");
 
+        webannotator.main.activateMenuItem("WebAnnotator_activeButton", "waDeactivate");
         webannotator.main.activateMenuItem("WebAnnotator_saveasButton");
         webannotator.main.activateMenuItem("WebAnnotator_titleButton");
 
@@ -401,7 +402,9 @@ webannotator.main = {
         if (menuItem != null) {
             menuItem.setAttribute("disabled", "false");
             if (labelName != null) {
-                menuItem.setAttribute("label", webannotator.bundle.GetStringFromName(labelName));
+                var labelText = webannotator.bundle.GetStringFromName(labelName);
+                menuItem.setAttribute("label", labelText);
+                menuItem.setAttribute("tooltiptext", labelText);
             }
         }
     },
@@ -461,15 +464,25 @@ webannotator.main = {
 	 * When tab containing the annotated page is left
 	 */
 	outOfFocus: function () {
+        function disable(id){
+            var elem = document.getElementById(id);
+            elem.disabled = true;
+            return elem;
+        }
+
 		webannotator.main.showWAPanel(false);
 		document.getElementById("WebAnnotator_waOptions").collapsed = true;
-		// Disable button
-		var button = document.getElementById("WebAnnotator_button");
-		button.disabled = true;
+		// Disable main button
+        var button = disable("WebAnnotator_button");
 		button.style.listStyleImage = "url('chrome://webannotator/skin/wa_small_disabled.png')";
-		// Disable menu
-		var menu = document.getElementById("WebAnnotator-menu");
-		menu.disabled = true;
+
+        // Disable menu
+        disable("WebAnnotator-menu");
+
+        // Disable toolbar buttons
+        disable("WebAnnotator_activeButton");
+        disable("WebAnnotator_saveasButton");
+        disable("WebAnnotator_titleButton");
 	},
 
 	/**
@@ -485,13 +498,24 @@ webannotator.main = {
 	 * Enable accesses to WA activation (button, menus)
 	 */
 	enableAddOn: function() {
+        function enable(id){
+            var elem = document.getElementById(id);
+            elem.disabled = false;
+            return elem;
+        }
 		// Enable button
-		var button = document.getElementById("WebAnnotator_button");
-		button.disabled = false;
+		var button = enable("WebAnnotator_button");
 		button.style.listStyleImage = "url('chrome://webannotator/skin/wa_small_activated.png')";
+
 		// Enable menu
-		var menu = document.getElementById("WebAnnotator-menu");
-		menu.disabled = false;
+        enable("WebAnnotator-menu");
+
+        // Enable toolbar buttons
+        enable("WebAnnotator_activeButton");
+        if (webannotator.session){
+            enable("WebAnnotator_saveasButton");
+            enable("WebAnnotator_titleButton");
+        }
 	},
 
 	/**
@@ -948,11 +972,15 @@ webannotator.main = {
 		var t_menu2 = document.getElementById('WebAnnotator_t_deleteMenu');
 		var b_activeMenu = document.getElementById("WebAnnotator_b_activeMenu");
 		var t_activeMenu = document.getElementById("WebAnnotator_t_activeMenu");
-        var activateBtn = document.getElementById("WebAnnotator_startAnnotationButton");
+        var activateBtn = document.getElementById("WebAnnotator_activeButton");
 
-        function setMenuActiveScheme(menu, i){
+        function setMenuActiveScheme(menu, i, updateTooltip){
             var schema = webannotator.schemas[i];
-            menu.setAttribute("label", webannotator.bundle.GetStringFromName("waActivate") + " " + schema["name"]);
+            var labelText = webannotator.bundle.GetStringFromName("waActivate") + " " + schema["name"];
+            menu.setAttribute("label", labelText);
+            if (updateTooltip){
+                menu.setAttribute("tooltiptext", labelText);
+            }
             menu.setAttribute("number", i);
             menu.addEventListener("command", webannotator.main.switchActivation);
         }
@@ -1061,7 +1089,7 @@ webannotator.main = {
                     activateBtn.setAttribute("disabled", "false");
 					var schema = webannotator.schemas[i];
 					if (schema["lastused"] == 1 && !webannotator.session) {
-                        setMenuActiveScheme(activateBtn, i);
+                        setMenuActiveScheme(activateBtn, i, true);
 						lastUsedFound = 1;
 					}
 				}
