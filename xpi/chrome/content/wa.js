@@ -38,9 +38,6 @@ webannotator.colors = {};
 // Is the panel visible or not ?
 webannotator.panelOn = true;
 
-// Is title annotation poopup visible or not?
-webannotator.titleAnnotationOn = false;
-
 // Max id from loaded annotation file
 // (0 when new annotation)
 webannotator.maxId;
@@ -206,7 +203,7 @@ webannotator.main = {
 			webannotator.main.receiveShowAnnotations();
 
             if (webannotator.prefs.getBoolPref("showTitlePopup")){
-                webannotator.main.showTitleAnnotationPopup();
+                webannotator.titleAnnotation.showPopup();
             }
 
 			// The page has not been modified yet
@@ -317,59 +314,6 @@ webannotator.main = {
 		webannotator.main.initVarMenu(dtdFileName);
 		webannotator.isOpen = false;
 	},
-
-    toggleTitleAnnotationPopup: function(){
-        if (!webannotator.titleAnnotationOn){
-            webannotator.main.showTitleAnnotationPopup();
-        }
-        else{
-            webannotator.main.hideTitleAnnotationPopup();
-        }
-    },
-
-    showTitleAnnotationPopup: function(){
-        var popup = webannotator.main.getTitleAnnotationPopup();
-        if (popup){
-            popup.style.display = 'block';
-            document.getElementById('WebAnnotator_titleButton').classList.add('active');
-        }
-        webannotator.titleAnnotationOn = true;
-    },
-
-    hideTitleAnnotationPopup: function(){
-        var popup = webannotator.main.getTitleAnnotationPopup();
-        if (popup){
-            popup.style.display = 'none';
-        }
-        document.getElementById('WebAnnotator_titleButton').classList.remove('active');
-        webannotator.titleAnnotationOn = false;
-    },
-
-    getTitleAnnotationPopup: function(){
-        var doc = content.document;
-
-        var titlePopup = doc.getElementById("webannotator-title-edit-popup");
-        if (titlePopup){ // already created
-            return titlePopup;
-        }
-
-        var title = doc.getElementsByTagName('title')[0];
-        if (!title){
-            return;
-        }
-
-        // There is no "close" element intentionally (to prevent users
-        // from annotating it). Use toolbar button to toggle the popup.
-        titlePopup = webannotator.misc.jsonToDOM([
-            "div", {
-                id: "webannotator-title-edit-popup",
-                style: "font-family:arial;z-index:11000;position:fixed;background:#fff;margin:0 auto;width:30%;left:0;right:0;top:10px;box-shadow:0 0 1em black;border:2px solid blue;padding:0.5em;display:none;"
-            }, title.innerHTML
-        ], doc);
-
-        doc.body.appendChild(titlePopup);
-        return titlePopup;
-    },
 
 	/**
 	 * Return the number of attributes in an object
@@ -625,7 +569,7 @@ webannotator.main = {
         webannotator.main.deactivateMenuItem("WebAnnotator_titleButton");
 
         document.getElementById('WebAnnotator_activeButton').classList.remove("active");
-        document.getElementById('WebAnnotator_titleButton').classList.remove('active');
+        webannotator.titleAnnotation.deactivateToolbarButton();
 
         window.content.location.reload();
         webannotator.linksEnable = true;
@@ -1328,6 +1272,9 @@ webannotator.main = {
 		var i;
 		var id;
 
+        // add WA-htmltitle element and remove title annotation popup from HTML
+        webannotator.titleAnnotation.createWAtitleElemFromPopup(clone);
+
 		// Delete WA communication element in HTML page
 		var element = clone.getElementById("WA_data_element");
 		element.parentNode.removeChild(element);
@@ -1421,6 +1368,7 @@ webannotator.main = {
 				}
 			}
 		}
+
 		// Save the page
 		webannotator.main.save(clone, fileName);
 	},
@@ -1742,7 +1690,6 @@ webannotator.main = {
         return filename.replace(/\.html?$/, ".export.html");
     },
 
-
     /**
      * Save and export current annotation to a local file.
      */
@@ -1754,6 +1701,9 @@ webannotator.main = {
         }
 
 		var saveClone = content.document.cloneNode();
+
+        // add WA-htmltitle element and remove title annotation popup from HTML
+        webannotator.titleAnnotation.createWAtitleElemFromPopup(saveClone);
 
 		// Activate links
 		if (webannotator.prefs.getBoolPref("activatelinks")) {
