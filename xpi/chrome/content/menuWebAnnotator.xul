@@ -50,7 +50,7 @@
     <toolbarbutton id="WebAnnotator_titleButton" class="toolbarbutton-1 chromeclass-toolbar-additional"
       label="Annotate &lt;title&gt;" tooltiptext="Annotate &lt;title&gt;"
       disabled="true"
-      oncommand=""/>
+      oncommand="webannotator.main.toggleTitleAnnotationPopup()"/>
 
 
   </toolbarpalette>

@@ -6,6 +6,10 @@
     list-style-image: url("chrome://webannotator/skin/wa_small_title.png");
 }
 
+#WebAnnotator_titleButton.active {
+    list-style-image: url("chrome://webannotator/skin/wa_small_title2.png");
+}
+
 #WebAnnotator_saveasButton {
     list-style-image: url("chrome://webannotator/skin/wa_small_s.png");
 }

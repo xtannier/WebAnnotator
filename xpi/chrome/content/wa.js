@@ -38,6 +38,9 @@ webannotator.colors = {};
 // Is the panel visible or not ?
 webannotator.panelOn = true;
 
+// Is title annotation poopup visible or not?
+webannotator.titleAnnotationOn = false;
+
 // Max id from loaded annotation file
 // (0 when new annotation)
 webannotator.maxId;
@@ -201,6 +204,11 @@ webannotator.main = {
 			webannotator.main.activateMenus();
 			// Show already existing annotation (if any)
 			webannotator.main.receiveShowAnnotations();
+
+            if (webannotator.prefs.getBoolPref("showTitlePopup")){
+                webannotator.main.showTitleAnnotationPopup();
+            }
+
 			// The page has not been modified yet
 			webannotator.main.setModified(false);
 		}
@@ -293,7 +301,7 @@ webannotator.main = {
 		body.appendChild(dom);
 		// edit popup
 		dom = webannotator.misc.jsonToDOM(["div", {id:"webannotator-edit-menu",
-									style:"font-family:arial;z-index:5;position:absolute;display:none;background-color:white;",
+									style:"font-family:arial;z-index:11001;position:absolute;display:none;background-color:white;",
 									onmouseover:function(e) { webannotator.htmlWA.retainEditAnnotationMenu(); return false;},
 									onmouseout:function(e) { webannotator.htmlWA.hideEditAnnotationMenu(); return false;}
 								   },
@@ -309,6 +317,59 @@ webannotator.main = {
 		webannotator.main.initVarMenu(dtdFileName);
 		webannotator.isOpen = false;
 	},
+
+    toggleTitleAnnotationPopup: function(){
+        if (!webannotator.titleAnnotationOn){
+            webannotator.main.showTitleAnnotationPopup();
+        }
+        else{
+            webannotator.main.hideTitleAnnotationPopup();
+        }
+    },
+
+    showTitleAnnotationPopup: function(){
+        var popup = webannotator.main.getTitleAnnotationPopup();
+        if (popup){
+            popup.style.display = 'block';
+            document.getElementById('WebAnnotator_titleButton').classList.add('active');
+        }
+        webannotator.titleAnnotationOn = true;
+    },
+
+    hideTitleAnnotationPopup: function(){
+        var popup = webannotator.main.getTitleAnnotationPopup();
+        if (popup){
+            popup.style.display = 'none';
+        }
+        document.getElementById('WebAnnotator_titleButton').classList.remove('active');
+        webannotator.titleAnnotationOn = false;
+    },
+
+    getTitleAnnotationPopup: function(){
+        var doc = content.document;
+
+        var titlePopup = doc.getElementById("webannotator-title-edit-popup");
+        if (titlePopup){ // already created
+            return titlePopup;
+        }
+
+        var title = doc.getElementsByTagName('title')[0];
+        if (!title){
+            return;
+        }
+
+        // There is no "close" element intentionally (to prevent users
+        // from annotating it). Use toolbar button to toggle the popup.
+        titlePopup = webannotator.misc.jsonToDOM([
+            "div", {
+                id: "webannotator-title-edit-popup",
+                style: "font-family:arial;z-index:11000;position:fixed;background:#fff;margin:0 auto;width:30%;left:0;right:0;top:10px;box-shadow:0 0 1em black;border:2px solid blue;padding:0.5em;display:none;"
+            }, title.innerHTML
+        ], doc);
+
+        doc.body.appendChild(titlePopup);
+        return titlePopup;
+    },
 
 	/**
 	 * Return the number of attributes in an object
@@ -364,7 +425,7 @@ webannotator.main = {
 		if (elems.length == 0) {
 			elems = "";
 		}
-		var dom = webannotator.misc.jsonToDOM(["div", {id:"webannotator-main-menu", style:"font-family:arial;z-index:5;position:absolute;display:none;border:thin solid black;background-color:white;text-align:center;"},
+		var dom = webannotator.misc.jsonToDOM(["div", {id:"webannotator-main-menu", style:"font-family:arial;z-index:11001;position:absolute;display:none;border:thin solid black;background-color:white;text-align:center;"},
 								[
 									["div", {id:"webannotator-main-menu-elems"}, elems],
 									["div", {}, ["button", {href:"#",
@@ -564,6 +625,7 @@ webannotator.main = {
         webannotator.main.deactivateMenuItem("WebAnnotator_titleButton");
 
         document.getElementById('WebAnnotator_activeButton').classList.remove("active");
+        document.getElementById('WebAnnotator_titleButton').classList.remove('active');
 
         window.content.location.reload();
         webannotator.linksEnable = true;
