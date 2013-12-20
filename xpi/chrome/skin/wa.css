@@ -1,6 +1,23 @@
 #WebAnnotator_button {
-	list-style-image: url("chrome://webannotator/skin/wa_small_activated.png"); 
+	list-style-image: url("chrome://webannotator/skin/wa_small_activated.png");
 }
 
+#WebAnnotator_titleButton {
+    list-style-image: url("chrome://webannotator/skin/wa_small_title.png");
+}
 
+#WebAnnotator_titleButton.active {
+    list-style-image: url("chrome://webannotator/skin/wa_small_title2.png");
+}
 
+#WebAnnotator_saveasButton {
+    list-style-image: url("chrome://webannotator/skin/wa_small_s.png");
+}
+
+#WebAnnotator_activeButton {
+    list-style-image: url("chrome://webannotator/skin/wa_small_a.png");
+}
+
+#WebAnnotator_activeButton.active {
+    list-style-image: url("chrome://webannotator/skin/wa_small_a2.png");
+}

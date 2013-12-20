@@ -12,6 +12,10 @@
 If this checkbox is checked WebAnnotator will finish current annotation session after saving.
 </setting>
 
+<setting pref="extensions.webannotator.showTitlePopup" type="bool" title="Show &lt;title&gt; annotation popup on activation">
+If this checkbox is checked WebAnnotator will show &lt;title&gt; annotation popup when annotation session starts.
+</setting>
+
 <setting pref="extensions.webannotator.activatelinks" type="bool" title="Activate links">
   WebAnnotator temporarily deactivates links during annotation to make it easier to annotate pages. Uncheck this checkbox if you want to keep links disabled in exported/saved annotated files.
 </setting>

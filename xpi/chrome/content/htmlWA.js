@@ -368,9 +368,9 @@ webannotator.htmlWA = {
 				menuSectionContent.push(["select", {}, options]);
 			}
 		}
-		
+
 		// Create new dom for updating the secondary popup menu
-		var dom = webannotator.misc.jsonToDOM(["div", {id:"webannotator-sec-menu", style:"font-family:arial;z-index:5;position:absolute;display:none;border:thin solid black;background-color:white;text-align:center;"},
+		var dom = webannotator.misc.jsonToDOM(["div", {id:"webannotator-sec-menu", style:"font-family:arial;z-index:11001;position:absolute;display:none;border:thin solid black;background-color:white;text-align:center;"},
 								[
 									["div", {id:"webannotator-sec-menu-elems"}, menuSectionContent],
 									["div", {}, [["button", {href:"#",

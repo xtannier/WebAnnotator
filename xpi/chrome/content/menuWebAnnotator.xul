@@ -5,6 +5,7 @@
 <overlay id="WA-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <script type="text/javascript" src="misc.js"></script>
   <script type="text/javascript" src="wa.js"></script>
+  <script type="text/javascript" src="titleAnnotation.js"></script>
   <script type="text/javascript" src="htmlWA.js"></script>
   <script type="text/javascript" src="popups.js"></script>
   <script type="text/javascript" src="options.js"></script>
@@ -37,6 +38,22 @@
 		<menuitem id="WebAnnotator_b_descriptionMenu" oncommand="window.showModalDialog('chrome://webannotator/content/description.xul',1)"/>
 	  </menupopup>
 	</toolbarbutton>
+
+    <toolbarbutton id="WebAnnotator_activeButton" class="toolbarbutton-1 chromeclass-toolbar-additional"
+      label="Start annotation" tooltiptext="Start annotation"
+      oncommand=""/>
+
+    <toolbarbutton id="WebAnnotator_saveasButton" class="toolbarbutton-1 chromeclass-toolbar-additional"
+      label="Save annotation as.." tooltiptext="Save annotation as.."
+      disabled="true"
+      oncommand="webannotator.main.runSaveAs()"/>
+
+    <toolbarbutton id="WebAnnotator_titleButton" class="toolbarbutton-1 chromeclass-toolbar-additional"
+      label="Annotate &lt;title&gt;" tooltiptext="Annotate &lt;title&gt;"
+      disabled="true"
+      oncommand="webannotator.titleAnnotation.togglePopup()"/>
+
+
   </toolbarpalette>
 
   <menupopup id="menu_ToolsPopup">
