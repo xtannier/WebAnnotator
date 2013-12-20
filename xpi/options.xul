@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE dialog SYSTEM "chrome://webannotator/locale/wa.dtd">
+
+<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<setting pref="extensions.webannotator.savecolors" type="bool" title="Keep color information outside WebAnnotator">
+  If this option is ON you'll be able to see colored annotated files in browser without loading this extension.
+</setting>
+
+<setting pref="extensions.webannotator.quitAfterSave" type="bool" title="Quit session after saving">
+If this checkbox is checked WebAnnotator will finish current annotation session after saving.
+</setting>
+
+<setting pref="extensions.webannotator.activatelinks" type="bool" title="Activate links">
+  WebAnnotator temporarily deactivates links during annotation to make it easier to annotate pages. Uncheck this checkbox if you want to keep links disabled in exported/saved annotated files.
+</setting>
+
+<setting pref="extensions.webannotator.autoExport" type="bool" title="Auto export">
+  Create &lt;filename&gt;.export.html files in addition to &lt;filename&gt;.html files when "Save as.." command is called.
+</setting>
+
+<setting pref="extensions.webannotator.saveformat" type="menulist" title="Save format">
+
+  <menulist>
+    <menupopup>
+      <menuitem value="only_html" label="Only HTML"/>
+      <menuitem value="add_base" label="HTML, inject &lt;base&gt; tag"/>
+      <menuitem value="absolute_links" label="HTML, rewrite links to absolute"/>
+      <menuitem value="complete" label="Complete"/>
+    </menupopup>
+  </menulist>
+
+HTML only: Save the original page without pictures as a single HTML file. This choice preserves the original HTML link structure, but doesn't allow to view page as originally shown.
+
+HTML, inject &lt;base&gt; tag: Save the original page as a single HTML file, but add "base" HTML tag to it. This choice preserves the original HTML link structure and allows you to view the page as it originally shown (with pictures). Pictures and other resources are loaded from the original web server; display could break if original server changes.
+
+HTML, rewrite links to absolute: Save the original page as a single HTML file, but make all links absolute. This choice allows you to view the page as it originally shown (with pictures), but it may not keep the HTML link structure of the original page. Pictures and other resources are loaded from the original web server; display could break if original server changes.
+
+Complete: Save the whole web page along with pictures. This choice allows you to view it as originally shown (with pictures), but it may not keep the HTML link structure of the original page. WebAnnotator creates a new directory where the page is saved to save pictures and other files necessary to show the whole web page.
+
+</setting>
+
+
+</vbox>
