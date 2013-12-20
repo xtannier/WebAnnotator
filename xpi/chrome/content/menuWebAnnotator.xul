@@ -37,6 +37,22 @@
 		<menuitem id="WebAnnotator_b_descriptionMenu" oncommand="window.showModalDialog('chrome://webannotator/content/description.xul',1)"/>
 	  </menupopup>
 	</toolbarbutton>
+
+    <toolbarbutton id="WebAnnotator_startAnnotationButton" class="toolbarbutton-1 chromeclass-toolbar-additional"
+      label="Start annotation" tooltiptext="Start annotation"
+      oncommand=""/>
+
+    <toolbarbutton id="WebAnnotator_saveasButton" class="toolbarbutton-1 chromeclass-toolbar-additional"
+      label="Save annotation as.." tooltiptext="Save annotation as.."
+      disabled="true"
+      oncommand="webannotator.main.runSaveAs()"/>
+
+    <toolbarbutton id="WebAnnotator_titleButton" class="toolbarbutton-1 chromeclass-toolbar-additional"
+      label="Annotate &lt;title&gt;" tooltiptext="Annotate &lt;title&gt;"
+      disabled="true"
+      oncommand=""/>
+
+
   </toolbarpalette>
 
   <menupopup id="menu_ToolsPopup">

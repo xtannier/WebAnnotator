@@ -389,6 +389,9 @@ webannotator.main = {
         webannotator.main.activateMenuItem("WebAnnotator_t_exportasMenu");
         webannotator.main.activateMenuItem("WebAnnotator_t_saveasMenu");
 
+        webannotator.main.activateMenuItem("WebAnnotator_saveasButton");
+        webannotator.main.activateMenuItem("WebAnnotator_titleButton");
+
 		var container = gBrowser.tabContainer;
 		container.addEventListener("TabSelect", webannotator.main.tabSelect, false);
 	},
@@ -530,6 +533,9 @@ webannotator.main = {
 
         webannotator.main.deactivateMenuItem("WebAnnotator_t_saveasMenu");
         webannotator.main.deactivateMenuItem("WebAnnotator_t_exportasMenu");
+
+        webannotator.main.deactivateMenuItem("WebAnnotator_saveasButton");
+        webannotator.main.deactivateMenuItem("WebAnnotator_titleButton");
 
         window.content.location.reload();
         webannotator.linksEnable = true;
@@ -942,6 +948,20 @@ webannotator.main = {
 		var t_menu2 = document.getElementById('WebAnnotator_t_deleteMenu');
 		var b_activeMenu = document.getElementById("WebAnnotator_b_activeMenu");
 		var t_activeMenu = document.getElementById("WebAnnotator_t_activeMenu");
+        var activateBtn = document.getElementById("WebAnnotator_startAnnotationButton");
+
+        function setMenuActiveScheme(menu, i){
+            var schema = webannotator.schemas[i];
+            menu.setAttribute("label", webannotator.bundle.GetStringFromName("waActivate") + " " + schema["name"]);
+            menu.setAttribute("number", i);
+            menu.addEventListener("command", webannotator.main.switchActivation);
+        }
+
+        function removeChildrenNodes(elem){
+            while (elem.hasChildNodes()) {
+                elem.removeChild(elem.firstChild);
+            }
+        }
 
 		// else, if no schema file available
 		if (webannotator.schemas.length == 0) {
@@ -955,6 +975,10 @@ webannotator.main = {
 				t_menu2.setAttribute("disabled", "true");
 				t_activeMenu.setAttribute("disabled", "true");
 			}
+
+            if (activateBtn != null){
+                activateBtn.setAttribute("disabled", "true");
+            }
 		}
 		// if schema files are available, update menus
 		// and enable them
@@ -965,12 +989,8 @@ webannotator.main = {
 				var b_menuChooseNodes = document.getElementById('WebAnnotator_b_chooseMenu_pop');
 				var b_menuDeleteNodes = document.getElementById('WebAnnotator_b_deleteMenu_pop');
 				// Remove all items from menus
-				while (b_menuChooseNodes.hasChildNodes()) {
-					b_menuChooseNodes.removeChild(b_menuChooseNodes.firstChild);
-				}
-				while (b_menuDeleteNodes.hasChildNodes()) {
-					b_menuDeleteNodes.removeChild(b_menuDeleteNodes.firstChild);
-				}
+                removeChildrenNodes(b_menuChooseNodes);
+                removeChildrenNodes(b_menuDeleteNodes);
 
 				// Add the names of the files in the menu: choose DTD and delete DTD
 				var lastUsedFound = 0;
@@ -987,9 +1007,7 @@ webannotator.main = {
 					menuitemDelete.setAttribute("number", i);
 					menuitemDelete.addEventListener("command", function(e) {webannotator.main.deleteSchemaFile(this.getAttribute('number'))});
 					if (schema["lastused"] == 1 && !webannotator.session) {
-						b_activeMenu.setAttribute("label", webannotator.bundle.GetStringFromName("waActivate") + " " + schema["name"]);
-						b_activeMenu.setAttribute("number", i);
-						b_activeMenu.addEventListener("command", webannotator.main.switchActivation);
+                        setMenuActiveScheme(b_activeMenu, i);
 						lastUsedFound = 1;
 					}
 				}
@@ -1006,12 +1024,8 @@ webannotator.main = {
 				var t_menuChooseNodes = document.getElementById('WebAnnotator_t_chooseMenu_pop');
 				var t_menuDeleteNodes = document.getElementById('WebAnnotator_t_deleteMenu_pop');
 				// Remove all items from menus
-				while (t_menuChooseNodes.hasChildNodes()) {
-					t_menuChooseNodes.removeChild(t_menuChooseNodes.firstChild);
-				}
-				while (t_menuDeleteNodes.hasChildNodes()) {
-					t_menuDeleteNodes.removeChild(t_menuDeleteNodes.firstChild);
-				}
+                removeChildrenNodes(t_menuChooseNodes);
+                removeChildrenNodes(t_menuDeleteNodes);
 
 				// Add the names of the files in the menu: choose DTD and delete DTD
 				var lastUsedFound = 0;
@@ -1028,9 +1042,7 @@ webannotator.main = {
 					menuitemDelete.setAttribute("number", i);
 					menuitemDelete.addEventListener("command", function(e) {webannotator.main.deleteSchemaFile(this.getAttribute('number'))});
 					if (schema["lastused"] == 1 && !webannotator.session) {
-						t_activeMenu.setAttribute("label", webannotator.bundle.GetStringFromName("waActivate") + " " + schema["name"]);
-						t_activeMenu.setAttribute("number", i);
-						t_activeMenu.addEventListener("command", webannotator.main.switchActivation);
+                        setMenuActiveScheme(t_activeMenu, i);
 						lastUsedFound = 1;
 					}
 				}
@@ -1040,6 +1052,23 @@ webannotator.main = {
 
 				webannotator.textMenuCreated = true;
 			}
+
+            if (activateBtn != null){
+				// Add the names of the files in the menu: choose DTD and delete DTD
+				var lastUsedFound = 0;
+				var i;
+				for (i = 0 ; i < webannotator.schemas.length ; i++) {
+                    activateBtn.setAttribute("disabled", "false");
+					var schema = webannotator.schemas[i];
+					if (schema["lastused"] == 1 && !webannotator.session) {
+                        setMenuActiveScheme(activateBtn, i);
+						lastUsedFound = 1;
+					}
+				}
+				if (!lastUsedFound && !webannotator.session) {
+					activateBtn.setAttribute("disabled", "true");
+				}
+            }
 		}
 		return true;
 	},
