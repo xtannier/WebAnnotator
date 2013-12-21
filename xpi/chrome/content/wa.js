@@ -1667,9 +1667,7 @@ webannotator.main = {
         // if local file is opened, use its filename by default
         var location = content.window.location;
         if (location.protocol == 'file:') {
-            var filename = decodeURIComponent(location.pathname.split('/').pop());
-            webannotator.main.setFileNumberFromFilename(filename);
-            return filename;
+            return decodeURIComponent(location.pathname.split('/').pop());
         }
 
         var namingStrategy = webannotator.prefs.getCharPref("namingStrategy");
