@@ -1183,8 +1183,6 @@ webannotator.main = {
 
                 var error = webannotator.main.readDTDFile(file);
 
-                var str;
-
                 if(error <= 0) {
                     var i = 0;
                     var j;
@@ -1357,7 +1355,7 @@ webannotator.main = {
                     var span_children = span.childNodes;
                     if (span_children.length > 0) {
                         for (var span_child_index = 0 ; span_child_index < span_children.length ; span_child_index++) {
-                            span_child = span_children[span_child_index];
+                            var span_child = span_children[span_child_index];
                             parent.insertBefore(span_child.cloneNode(true),
                                                 span);
                         }
