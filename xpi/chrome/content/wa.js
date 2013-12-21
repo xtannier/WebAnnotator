@@ -1263,7 +1263,7 @@ webannotator.main = {
      * Export the current annotated page ("export" is different from "save")
      */
     exportAnnotations: function (fileName) {
-        var clone = window.content.document.cloneNode();
+        var clone = window.content.document.cloneNode(true);
 //		var del = [];
         var spansStartArray = [];
         var spansEndArray = [];
@@ -1700,7 +1700,7 @@ webannotator.main = {
             webannotator.main.exportAnnotations(exportFileName);
         }
 
-        var saveClone = content.document.cloneNode();
+        var saveClone = content.document.cloneNode(true);
 
         // add WA-htmltitle element and remove title annotation popup from HTML
         webannotator.titleAnnotation.createWAtitleElemFromPopup(saveClone);
