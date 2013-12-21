@@ -2051,8 +2051,10 @@ webannotator.main = {
     addBaseTag: function(doc, baseUrl){
         var base = doc.getElementsByTagName('base')[0];
         if (base){
-            // don't touch base if it exists
-            // base.parentNode.removeChild(base);
+            // don't touch base.href if it exists
+            if (!base.hasAttribute("href")){
+                base.href = baseUrl;
+            }
         }
         else{
             base = doc.createElement('base');
