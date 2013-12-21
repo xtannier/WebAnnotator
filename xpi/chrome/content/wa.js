@@ -58,6 +58,9 @@ webannotator.session = false;
 // true if modified (and must save before closing)
 webannotator.modified = false;
 
+// auto-incrementing number for filename suggests
+webannotator.nextFileNumber = 0;
+
 // schema currently in use
 webannotator.currentSchemaId;
 
@@ -1633,6 +1636,7 @@ webannotator.main = {
         var filename = webannotator.main.suggestFilename();
         var title = "Save current annotation as..";
         webannotator.main.startSaveAsDialog(filename, title, function(file){
+            webannotator.main.setFileNumberFromFilename(file.path);
             webannotator.main.saveAnnotations(file.path);
         });
     },
@@ -1648,6 +1652,14 @@ webannotator.main = {
         })
     },
 
+    setFileNumberFromFilename: function(filename){
+        var numRe = /(\d+)\.html?$/;
+        var m = numRe.exec(filename);
+        if (m){
+            webannotator.nextFileNumber = parseInt(m[1]) + 1;
+        }
+    },
+
     /**
      * Suggest a filename based on page's URL and title
      */
@@ -1655,15 +1667,28 @@ webannotator.main = {
         // if local file is opened, use its filename by default
         var location = content.window.location;
         if (location.protocol == 'file:') {
-            return decodeURIComponent(location.pathname.split('/').pop());
+            var filename = decodeURIComponent(location.pathname.split('/').pop());
+            webannotator.main.setFileNumberFromFilename(filename);
+            return filename;
         }
 
-        // use title otherwise
-        var title = content.document.title;
-        if (title.endsWith(".html") || title.endsWith(".htm")){
-            return title;
+        var namingStrategy = webannotator.prefs.getCharPref("namingStrategy");
+        if (namingStrategy == "numbers") {
+            // use auto-incrementing numbers for a file name
+            return webannotator.nextFileNumber + ".html";
         }
-        return title + ".html";
+        else if (namingStrategy == "titles") {
+
+            // use title to suggest a file name otherwise
+            var title = content.document.title;
+            if (title.endsWith(".html") || title.endsWith(".htm")){
+                return title;
+            }
+            return title + ".html";
+        }
+        else {
+            alert("ERROR: unknown naming strategy '" + namingStrategy + "'. Please report to https://github.com/xtannier/WebAnnotator");
+        }
     },
 
     /**

@@ -4,3 +4,4 @@ pref("extensions.webannotator.saveformat", "only_html");
 pref("extensions.webannotator.quitAfterSave", true);
 pref("extensions.webannotator.autoExport", false);
 pref("extensions.webannotator.showTitlePopup", false);
+pref("extensions.webannotator.namingStrategy", "numbers");

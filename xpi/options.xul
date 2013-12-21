@@ -45,5 +45,19 @@ Complete: Save the whole web page along with pictures. This choice allows you to
 
 </setting>
 
+<setting pref="extensions.webannotator.namingStrategy" type="menulist" title="Naming strategy">
+
+  <menulist>
+    <menupopup>
+      <menuitem value="titles" label="Use titles"/>
+      <menuitem value="numbers" label="Use numbers"/>
+    </menupopup>
+  </menulist>
+
+Use titles: for new files suggest names from the page title; keep local file names.
+
+Use numbers: for new files suggest increasing numbers as names; keep local file names.
+</setting>
+
 
 </vbox>
