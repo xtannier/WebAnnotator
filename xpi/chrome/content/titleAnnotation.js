@@ -2,7 +2,7 @@
 
 // namespace.
 if (typeof webannotator == "undefined") {
-	var webannotator = {};
+    var webannotator = {};
 }
 
 webannotator.titleAnnotation = {
