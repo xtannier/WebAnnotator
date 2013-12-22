@@ -96,14 +96,14 @@ webannotator.htmlWA = {
         webannotator.htmlWA.receiveWindowUnblinkAnnotation();
         webannotator.popups.hide_popup("webannotator-edit-menu");
         webannotator.showEditEvent = setTimeout(function() {
-			var currentSelection = webannotator.htmlWA.getSelectedText().text;
+            var currentSelection = webannotator.htmlWA.getSelectedText().text;
             if(currentSelection == "")	{
-				webannotator.htmlWA.setIdToEdit(id); 
-				webannotator.popups.show_popup('webannotator-edit-menu', evt); 
-				webannotator.main.receiveSelectAnnotation(id); 
-				webannotator.htmlWA.receiveWindowBlinkAnnotation(id);
-			}
-		}, 500);
+                webannotator.htmlWA.setIdToEdit(id);
+                webannotator.popups.show_popup('webannotator-edit-menu', evt);
+                webannotator.main.receiveSelectAnnotation(id);
+                webannotator.htmlWA.receiveWindowBlinkAnnotation(id);
+            }
+        }, 500);
     },
 
     /**
@@ -281,7 +281,7 @@ webannotator.htmlWA = {
             if(webannotator.aSelection.text!="")	{
                 webannotator.isOpen = true;
                 webannotator.htmlWA.setIdToEdit(null);
-				webannotator.popups.hide_popup("webannotator-edit-menu");
+                webannotator.popups.hide_popup("webannotator-edit-menu");
                 webannotator.popups.show_popup("webannotator-main-menu", evt);
             }
         }
@@ -295,28 +295,28 @@ webannotator.htmlWA = {
         webannotator.htmlWA.clearSelection();
     },
 
-	/**
-	 * Clear current selection
-	 */
-	clearSelection: function() {
-		var sel;
-		if ( (sel = document.selection) && sel.empty ) {
-			sel.empty();
-		} else {
-			if (content.window.getSelection) {
-				content.window.getSelection().removeAllRanges();
-			}
-			var activeEl = document.activeElement;
-			if (activeEl) {
-				var tagName = activeEl.nodeName.toLowerCase();
-				if ( tagName == "textarea" || (tagName == "input" && activeEl.type == "text") ) {
-					// Collapse the selection to the end
-					activeEl.selectionStart = activeEl.selectionEnd;
-				}
-			}
-		}
-	},
-	
+    /**
+     * Clear current selection
+     */
+    clearSelection: function() {
+        var sel;
+        if ( (sel = document.selection) && sel.empty ) {
+            sel.empty();
+        } else {
+            if (content.window.getSelection) {
+                content.window.getSelection().removeAllRanges();
+            }
+            var activeEl = document.activeElement;
+            if (activeEl) {
+                var tagName = activeEl.nodeName.toLowerCase();
+                if ( tagName == "textarea" || (tagName == "input" && activeEl.type == "text") ) {
+                    // Collapse the selection to the end
+                    activeEl.selectionStart = activeEl.selectionEnd;
+                }
+            }
+        }
+    },
+
     /**
      * Update the secondary popup menu (subtype menu) according
      * to main type.
@@ -497,8 +497,8 @@ webannotator.htmlWA = {
         var _status;
         if (webannotator.linksEnable) {
             for(i = 0; i < links.length; i++) {
-				var toRemove = [];
-				var toPush = {};
+                var toRemove = [];
+                var toPush = {};
                 var element = links[i];
                 var attrs = element.attributes;
                 var attrName; var length = attrs.length;
@@ -506,16 +506,16 @@ webannotator.htmlWA = {
                     attr = attrs.item(j);
                     attrName = attr.nodeName.toLowerCase();
                     if ((element.nodeName.toLowerCase() === "a" && attrName.toLowerCase() === "href") || (attrName.startsWith("on")) || (attrName.startsWith("ajaxify"))) {
-						toRemove.push(attrName);
-						toPush[wa_prefix + attrName] = element.getAttribute(attrName);
+                        toRemove.push(attrName);
+                        toPush[wa_prefix + attrName] = element.getAttribute(attrName);
                     }
                 }
-				for (var elem in toRemove) {
-					element.removeAttribute(toRemove[elem]);
-				}
-				for (var elem in toPush) {
-					element.setAttribute(elem, toPush[elem]);
-				}
+                for (var elem in toRemove) {
+                    element.removeAttribute(toRemove[elem]);
+                }
+                for (var elem in toPush) {
+                    element.setAttribute(elem, toPush[elem]);
+                }
             }
             _status = "disable";
             //element.setAttribute("link-status", "disable");
@@ -528,21 +528,21 @@ webannotator.htmlWA = {
                 var attrs = element.attributes;
                 var attrName; var length = attrs.length;
                 for (var attr, j = 0 ; j < length; j++){
-					var toRemove = [];
-					var toPush = {};
+                    var toRemove = [];
+                    var toPush = {};
                     attr = attrs.item(j);
                     attrName = attr.nodeName;
                     if (attrName.substring(0, wa_prefix.length).toLowerCase() === wa_prefix.toLowerCase()) {
- 						toRemove.push(attrName);
-						toPush[attrName.substring(wa_prefix.length, attrName.length)] = element.getAttribute(attrName);
+                        toRemove.push(attrName);
+                        toPush[attrName.substring(wa_prefix.length, attrName.length)] = element.getAttribute(attrName);
                    }
                 }
-				for (var elem in toRemove) {
-					element.removeAttribute(toRemove[elem]);
-				}
-				for (var elem in toPush) {
-					element.setAttribute(elem, toPush[elem]);
-				}
+                for (var elem in toRemove) {
+                    element.removeAttribute(toRemove[elem]);
+                }
+                for (var elem in toPush) {
+                    element.setAttribute(elem, toPush[elem]);
+                }
 
 
                 // var element = links[i];
