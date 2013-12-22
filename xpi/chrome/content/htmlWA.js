@@ -505,7 +505,7 @@ webannotator.htmlWA = {
                 for (var attr, j = 0 ; j < length; j++){
                     attr = attrs.item(j);
                     attrName = attr.nodeName.toLowerCase();
-                    if ((element.nodeName.toLowerCase() === "a" && attrName.toLowerCase() === "href") || (attrName.charAt(0) === 'o' && attrName.charAt(1) === 'n') || (attrName.charAt(0) === 'a' && attrName.charAt(1) === 'j'  && attrName.charAt(2) === 'a'  && attrName.charAt(3) === 'x' && attrName.charAt(4) === 'i' && attrName.charAt(5) === 'f' && attrName.charAt(6) === 'y')) {
+                    if ((element.nodeName.toLowerCase() === "a" && attrName.toLowerCase() === "href") || (attrName.startsWith("on")) || (attrName.startsWith("ajaxify"))) {
 						toRemove.push(attrName);
 						toPush[wa_prefix + attrName] = element.getAttribute(attrName);
                     }
