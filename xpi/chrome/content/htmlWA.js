@@ -295,7 +295,9 @@ webannotator.htmlWA = {
         webannotator.htmlWA.clearSelection();
     },
 
-
+	/**
+	 * Clear current selection
+	 */
 	clearSelection: function() {
 		var sel;
 		if ( (sel = document.selection) && sel.empty ) {
@@ -495,17 +497,25 @@ webannotator.htmlWA = {
         var _status;
         if (webannotator.linksEnable) {
             for(i = 0; i < links.length; i++) {
+				var toRemove = [];
+				var toPush = {};
                 var element = links[i];
                 var attrs = element.attributes;
                 var attrName; var length = attrs.length;
                 for (var attr, j = 0 ; j < length; j++){
                     attr = attrs.item(j);
-                    attrName = attr.nodeName;
-                    if ((element.nodeName.toLowerCase() === "a" && attrName.toLowerCase() === "href") || (attrName.charAt(0) === 'o' && attrName.charAt(1) === 'n')) {
-                        element.setAttribute(wa_prefix + attrName, element.getAttribute(attrName));
-                        element.removeAttribute(attrName);
+                    attrName = attr.nodeName.toLowerCase();
+                    if ((element.nodeName.toLowerCase() === "a" && attrName.toLowerCase() === "href") || (attrName.charAt(0) === 'o' && attrName.charAt(1) === 'n') || (attrName.charAt(0) === 'a' && attrName.charAt(1) === 'j'  && attrName.charAt(2) === 'a'  && attrName.charAt(3) === 'x' && attrName.charAt(4) === 'i' && attrName.charAt(5) === 'f' && attrName.charAt(6) === 'y')) {
+						toRemove.push(attrName);
+						toPush[wa_prefix + attrName] = element.getAttribute(attrName);
                     }
                 }
+				for (var elem in toRemove) {
+					element.removeAttribute(toRemove[elem]);
+				}
+				for (var elem in toPush) {
+					element.setAttribute(elem, toPush[elem]);
+				}
             }
             _status = "disable";
             //element.setAttribute("link-status", "disable");
@@ -518,14 +528,21 @@ webannotator.htmlWA = {
                 var attrs = element.attributes;
                 var attrName; var length = attrs.length;
                 for (var attr, j = 0 ; j < length; j++){
+					var toRemove = [];
+					var toPush = {};
                     attr = attrs.item(j);
                     attrName = attr.nodeName;
                     if (attrName.substring(0, wa_prefix.length).toLowerCase() === wa_prefix.toLowerCase()) {
-                    // if ((attrName.charAt(0) === 'o' && attrName.charAt(1) === 'n')) {
-                        element.setAttribute(attrName.substring(wa_prefix.length, attrName.length), element.getAttribute(attrName));
-                        element.removeAttribute(attrName);
-                    }
+ 						toRemove.push(attrName);
+						toPush[attrName.substring(wa_prefix.length, attrName.length)] = element.getAttribute(attrName);
+                   }
                 }
+				for (var elem in toRemove) {
+					element.removeAttribute(toRemove[elem]);
+				}
+				for (var elem in toPush) {
+					element.setAttribute(elem, toPush[elem]);
+				}
 
 
                 // var element = links[i];
