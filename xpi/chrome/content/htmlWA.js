@@ -95,7 +95,15 @@ webannotator.htmlWA = {
         clearTimeout(webannotator.showEditEvent);
         webannotator.htmlWA.receiveWindowUnblinkAnnotation();
         webannotator.popups.hide_popup("webannotator-edit-menu");
-        webannotator.showEditEvent = setTimeout(function() {webannotator.htmlWA.setIdToEdit(id); webannotator.popups.show_popup('webannotator-edit-menu', evt); webannotator.main.receiveSelectAnnotation(id); webannotator.htmlWA.receiveWindowBlinkAnnotation(id);}, 500);
+        webannotator.showEditEvent = setTimeout(function() {
+			var currentSelection = webannotator.htmlWA.getSelectedText().text;
+            if(currentSelection == "")	{
+				webannotator.htmlWA.setIdToEdit(id); 
+				webannotator.popups.show_popup('webannotator-edit-menu', evt); 
+				webannotator.main.receiveSelectAnnotation(id); 
+				webannotator.htmlWA.receiveWindowBlinkAnnotation(id);
+			}
+		}, 500);
     },
 
     /**
@@ -273,6 +281,7 @@ webannotator.htmlWA = {
             if(webannotator.aSelection.text!="")	{
                 webannotator.isOpen = true;
                 webannotator.htmlWA.setIdToEdit(null);
+				webannotator.popups.hide_popup("webannotator-edit-menu");
                 webannotator.popups.show_popup("webannotator-main-menu", evt);
             }
         }
@@ -283,8 +292,29 @@ webannotator.htmlWA = {
      */
     closeMenu: function () {
         webannotator.isOpen=false;
+        webannotator.htmlWA.clearSelection();
     },
 
+
+	clearSelection: function() {
+		var sel;
+		if ( (sel = document.selection) && sel.empty ) {
+			sel.empty();
+		} else {
+			if (content.window.getSelection) {
+				content.window.getSelection().removeAllRanges();
+			}
+			var activeEl = document.activeElement;
+			if (activeEl) {
+				var tagName = activeEl.nodeName.toLowerCase();
+				if ( tagName == "textarea" || (tagName == "input" && activeEl.type == "text") ) {
+					// Collapse the selection to the end
+					activeEl.selectionStart = activeEl.selectionEnd;
+				}
+			}
+		}
+	},
+	
     /**
      * Update the secondary popup menu (subtype menu) according
      * to main type.
