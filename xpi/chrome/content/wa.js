@@ -1555,7 +1555,7 @@ webannotator.main = {
             delete webannotator.annotationTexts[id];
             delete webannotator.annotationAttributes[id];
             webannotator.main.deleteIdWebAnnotator(id);
-			webannotator.main.setModified(true);
+            webannotator.main.setModified(true);
         }
         webannotator.main.receiveShowAnnotations();
     },
