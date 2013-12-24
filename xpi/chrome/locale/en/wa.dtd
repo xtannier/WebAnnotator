@@ -11,6 +11,7 @@
 <!ENTITY wa.saveandexportas "Save &amp; Export as...">
 <!ENTITY wa.saveas "Save as...">
 <!ENTITY wa.exportas "Export as...">
+<!ENTITY wa.annotatetitle "Annotate &lt;title&gt;">
 
 <!ENTITY wa.types "Types">
 <!ENTITY wa.subtypes "Subtypes">
@@ -29,3 +30,33 @@
 <!ENTITY wa.fieldschemadescription "Schema Description">
 <!ENTITY wa.colors "Colors">
 <!ENTITY wa.movepopup "Move selection popups">
+
+<!ENTITY wa.keepannotationinfo "Keep annotation info outside &wa.name;">
+<!ENTITY wa.keepannotationinfo_description "If this option is ON you'll be able to see colored annotated files and title information in browser without loading the extension.">
+<!ENTITY wa.quitaftersaving "Quit session after saving">
+<!ENTITY wa.quitaftersaving_description "If this checkbox is checked &wa.name; will finish current annotation session after saving.">
+<!ENTITY wa.showtitlepopup "Show &lt;title&gt; annotation popup on activation">
+<!ENTITY wa.showtitlepopup_description "If this checkbox is checked &wa.name; will show &lt;title&gt; annotation popup when annotation session starts.">
+<!ENTITY wa.activate_links "Activate links">
+<!ENTITY wa.activate_links_description "&wa.name; temporarily deactivates links during annotation to make it easier to annotate pages. Uncheck this checkbox if you want to keep links disabled in exported/saved annotated files.">
+<!ENTITY wa.autoexport "Auto export">
+<!ENTITY wa.autoexport_description "Create &lt;filename&gt;.export.html files in addition to &lt;filename&gt;.html files when '&wa.saveas;' command is called.">
+<!ENTITY wa.naming "Naming strategy">
+<!ENTITY wa.naming_usetitles "Use titles">
+<!ENTITY wa.naming_usenumbers "Use numbers">
+<!ENTITY wa.naming_description "&wa.naming_usetitles;: for new files suggest names from the page title; keep local file names. 
+
+&wa.naming_usenumber;: for new files suggest increasing numbers as names; keep local file names.">
+<!ENTITY wa.saveformat "Save format">
+<!ENTITY wa.saveformat_onlyhtml "HTML only">
+<!ENTITY wa.saveformat_addbase "HTML, inject &lt;base&gt; tag">
+<!ENTITY wa.saveformat_absolute_links "HTML, rewrite links to absolute">
+<!ENTITY wa.saveformat_complete "Complete">
+<!ENTITY wa.saveformat_description "&wa.saveformat_onlyhtml;: Save the original page without pictures as a single HTML file. This choice preserves the original HTML link structure, but doesn't allow to view page as originally shown.
+
+&wa.saveformat_addbase;: Save the original page as a single HTML file, but add 'base' HTML tag to it. This choice preserves the original HTML link structure and allows you to view the page as it originally shown (with pictures). Pictures and other resources are loaded from the original web server; display could break if original server changes.
+
+&wa.saveformat_absolute_links;: Save the original page as a single HTML file, but make all links absolute. This choice allows you to view the page as it originally shown (with pictures), but it may not keep the HTML link structure of the original page. Pictures and other resources are loaded from the original web server; display could break if original server changes.
+
+&wa.saveformat_complete;: Save the whole web page along with pictures. This choice allows you to view it as originally shown (with pictures), but it may not keep the HTML link structure of the original page. &wa.name; creates a new directory where the page is saved to save pictures and other files necessary to show the whole web page.
+">

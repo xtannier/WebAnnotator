@@ -11,6 +11,7 @@
 <!ENTITY wa.saveandexportas "Sauvegarder &amp; Exporter sous...">
 <!ENTITY wa.saveas "Sauvegarder sous...">
 <!ENTITY wa.exportas "Exporter sous...">
+<!ENTITY wa.annotatetitle "Annoter le title (balise &lt;title&gt;)">
 
 <!ENTITY wa.types "Types">
 <!ENTITY wa.subtypes "Sous-types">
@@ -29,3 +30,34 @@
 <!ENTITY wa.fieldschemadescription "Description du sch&#233;ma">
 <!ENTITY wa.colors "Couleurs">
 <!ENTITY wa.movepopup "D&#233;placer les cadres de s&#233;lection">
+
+<!ENTITY wa.keepannotationinfo "Conserver les infos d'annotation en dehors de &wa.name;">
+<!ENTITY wa.keepannotationinfo_description "Si cette option est activée, vous pourrez visualiser les fichiers annotés en couleurs et les informations du titre dans le navigateur, sans charger l'extension.">
+<!ENTITY wa.quitaftersaving "Quitter la session après la sauvegarde">
+<!ENTITY wa.quitaftersaving_description "Si cette option est activée, &wa.name; mettra fin à la session d'annotation après la sauvegarde.">
+<!ENTITY wa.showtitlepopup "Montrer le popup d'annotation du titre (balise &lt;title&gt;) dès l'activation">
+<!ENTITY wa.showtitlepopup_description "Si cette option est activée, le popup d'annotation du titre (balise &lt;title&gt;) sera affiché dès l'activation. Dans le cas contraire, il faudra cliquer sur l'icône associée pour montrer le titre et l'annoter">
+<!ENTITY wa.activate_links "Activer les liens à la sauvegarde">
+<!ENTITY wa.activate_links_description "&wa.name; désactive temporairement les liens de la page pendant l'annotation, et les liens sont réactivés pour la sauvegarde. 
+Désactivez cette option pour ne pas réactiver les liens lors de la sauvegarde.">
+<!ENTITY wa.autoexport "Exportation automatique">
+<!ENTITY wa.autoexport_description "Crée automatiquement un fichier &lt;fichier&gt;.export.html en plus du fichier &lt;fichier&gt;.html de sauvegarde quand la commande '&wa.saveas;' est appelée.">
+<!ENTITY wa.naming "Stratégie de nommage">
+<!ENTITY wa.naming_usetitles "Utiliser les titres">
+<!ENTITY wa.naming_usenumbers "Utiliser des numéros">
+<!ENTITY wa.naming_description "&wa.naming_usetitles; : pour les nouveaux fichiers, le titre de la page est suggéré lors de la première sauvegarde. 
+
+&wa.naming_usenumbers;: des nombres auto-incrémentés sont suggérés comme nom de fichier lors de la première sauvegarde.">
+<!ENTITY wa.saveformat "Format de sauvegarde">
+<!ENTITY wa.saveformat_onlyhtml "HTML seulement">
+<!ENTITY wa.saveformat_addbase "HTML + &lt;base&gt;">
+<!ENTITY wa.saveformat_absolute_links "HTML, liens absolus">
+<!ENTITY wa.saveformat_complete "Complet">
+<!ENTITY wa.saveformat_description "&wa.saveformat_onlyhtml; : sauvegarde la page originale sans les images ou les fichiers CSS, en un seul fichier. Ce choix préserve la structure de la page HTML originale, mais ne permet plus de visualiser la page par la suite.
+
+&wa.saveformat_addbase; : sauvegarde la page originale dans un fichier HTML unique, et ajoute la balise HTML 'base'. Ce choix préserve la structure de la page HTML originale et vous permet de visualiser la page par la suite sur votre navigateur. Les images et les autres ressources sont chargées sur le serveur de la page originale. L'affichage pourrait donc ne pas fonctionner si le serveur de la page ne fournit plus les ressources nécessaires.
+
+&wa.saveformat_absolute_links; : sauvegarde la page originale dans un fichier HTML unique, mais rend tous les liens absolus. absolute. Ce choix vous permet de visualiser la page par la suite sur votre navigateur, mais ne préserve pas la structure de la page HTML originale. Les images et les autres ressources sont chargées sur le serveur de la page originale. L'affichage pourrait donc ne pas fonctionner si le serveur de la page ne fournit plus les ressources nécessaires.
+
+&wa.saveformat_complete; : sauvegarde l'intégrale de la page, avec les images et l'ensemble des ressources. Ce choix vous permet de visualiser la page par la suite sur votre navigateur, mais peut ne pas préserver la structure de la page HTML originale. &wa.name; crée un répertoire contenant l'ensemble des images et des ressources nécessaires pour la visualisation..
+">
