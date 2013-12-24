@@ -11,6 +11,7 @@
 <!ENTITY wa.saveandexportas "Save &amp; Export as...">
 <!ENTITY wa.saveas "Save as...">
 <!ENTITY wa.exportas "Export as...">
+<!ENTITY wa.annotatetitle "Annotate &lt;title&gt;">
 
 <!ENTITY wa.types "Types">
 <!ENTITY wa.subtypes "Subtypes">
