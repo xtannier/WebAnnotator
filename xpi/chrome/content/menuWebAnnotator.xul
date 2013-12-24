@@ -40,16 +40,16 @@
     </toolbarbutton>
 
     <toolbarbutton id="WebAnnotator_activeButton" class="toolbarbutton-1 chromeclass-toolbar-additional"
-      label="Start annotation" tooltiptext="Start annotation"
+      label="&wa.activatelastused;" tooltiptext="&wa.activatelastused;"
       oncommand=""/>
 
     <toolbarbutton id="WebAnnotator_saveasButton" class="toolbarbutton-1 chromeclass-toolbar-additional"
-      label="Save annotation as.." tooltiptext="Save annotation as.."
+      label="&wa.saveas;" tooltiptext="&wa.saveas;"
       disabled="true"
       oncommand="webannotator.main.runSaveAs()"/>
 
     <toolbarbutton id="WebAnnotator_titleButton" class="toolbarbutton-1 chromeclass-toolbar-additional"
-      label="Annotate &lt;title&gt;" tooltiptext="Annotate &lt;title&gt;"
+      label="&wa.annotatetitle;" tooltiptext="&wa.annotatetitle;"
       disabled="true"
       oncommand="webannotator.titleAnnotation.togglePopup()"/>
 
