@@ -68,6 +68,9 @@ webannotator.currentSchemaId;
 webannotator.currentDtdElements = null;
 webannotator.currentDtdElementConstraints = null;
 
+// Last save file name
+webannotator.lastSaveFile = null;
+
 // save done
 //webannotator.saveDone = false;
 
@@ -394,10 +397,14 @@ webannotator.main = {
         webannotator.main.activateMenuItem("WebAnnotator_b_activeMenu", "waDeactivate");
         webannotator.main.activateMenuItem("WebAnnotator_b_exportasMenu");
         webannotator.main.activateMenuItem("WebAnnotator_b_saveasMenu");
+        if (webannotator.lastSaveFile != null) {
+            webannotator.main.activateMenuItem("WebAnnotator_b_saveMenu");
+            webannotator.main.activateMenuItem("WebAnnotator_t_saveasMenu");
+        }
 
         webannotator.main.activateMenuItem("WebAnnotator_t_activeMenu", "waDeactivate");
         webannotator.main.activateMenuItem("WebAnnotator_t_exportasMenu");
-        webannotator.main.activateMenuItem("WebAnnotator_t_saveasMenu");
+        webannotator.main.activateMenuItem("WebAnnotator_t_saveMenu");
 
         webannotator.main.activateMenuItem("WebAnnotator_activeButton", "waDeactivate");
         webannotator.main.activateMenuItem("WebAnnotator_saveasButton");
@@ -563,9 +570,11 @@ webannotator.main = {
         content.document.body.removeEventListener("mouseup", webannotator.htmlWA.openMenu, false);
 
         webannotator.main.deactivateMenuItem("WebAnnotator_b_saveasMenu");
+        webannotator.main.deactivateMenuItem("WebAnnotator_b_saveMenu");
         webannotator.main.deactivateMenuItem("WebAnnotator_b_exportasMenu");
 
         webannotator.main.deactivateMenuItem("WebAnnotator_t_saveasMenu");
+        webannotator.main.deactivateMenuItem("WebAnnotator_t_saveMenu");
         webannotator.main.deactivateMenuItem("WebAnnotator_t_exportasMenu");
 
         webannotator.main.deactivateMenuItem("WebAnnotator_saveasButton");
@@ -1630,15 +1639,30 @@ webannotator.main = {
         }
     },
 
+    /**  
+     * "Save..." handler
+     */
+    runSave: function(){
+        var filename = webannotator.lastSaveFile;
+        alert("save file in " + filename);
+        if (filename != null) {
+            webannotator.main.saveAnnotations(filename);
+        }
+    },   
+
+
     /**
      * "Save as..." handler
      */
     runSaveAs: function(){
         var filename = webannotator.main.suggestFilename();
-        var title = "Save current annotation as..";
+        var title = webannotator.bundle.GetStringFromName("waSaveAnnotation");
         webannotator.main.startSaveAsDialog(filename, title, function(file){
             webannotator.main.setFileNumberFromFilename(file.path);
             webannotator.main.saveAnnotations(file.path);
+            webannotator.lastSaveFile = file.path;
+            webannotator.main.activateMenuItem("WebAnnotator_b_saveMenu");
+            webannotator.main.activateMenuItem("WebAnnotator_t_saveasMenu");
         });
     },
 
@@ -1647,7 +1671,7 @@ webannotator.main = {
      */
     runExportAs: function(){
         var filename = webannotator.main.suggestExportFilename();
-        var title = "Export current annotation as..";
+        var title = webannotator.bundle.GetStringFromName("waExportAnnotation");
         webannotator.main.startSaveAsDialog(filename, title, function(file){
             webannotator.main.exportAnnotations(file.path);
         })
