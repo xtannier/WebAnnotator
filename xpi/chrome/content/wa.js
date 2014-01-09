@@ -399,12 +399,12 @@ webannotator.main = {
         webannotator.main.activateMenuItem("WebAnnotator_b_saveasMenu");
         if (webannotator.lastSaveFile != null) {
             webannotator.main.activateMenuItem("WebAnnotator_b_saveMenu");
-            webannotator.main.activateMenuItem("WebAnnotator_t_saveasMenu");
+            webannotator.main.activateMenuItem("WebAnnotator_t_saveMenu");
         }
 
         webannotator.main.activateMenuItem("WebAnnotator_t_activeMenu", "waDeactivate");
         webannotator.main.activateMenuItem("WebAnnotator_t_exportasMenu");
-        webannotator.main.activateMenuItem("WebAnnotator_t_saveMenu");
+        webannotator.main.activateMenuItem("WebAnnotator_t_saveasMenu");
 
         webannotator.main.activateMenuItem("WebAnnotator_activeButton", "waDeactivate");
         webannotator.main.activateMenuItem("WebAnnotator_saveasButton");
