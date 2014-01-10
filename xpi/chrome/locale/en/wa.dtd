@@ -44,9 +44,9 @@
 <!ENTITY wa.naming "Naming strategy">
 <!ENTITY wa.naming_usetitles "Use titles">
 <!ENTITY wa.naming_usenumbers "Use numbers">
-<!ENTITY wa.naming_description "&wa.naming_usetitles;: for new files suggest names from the page title; keep local file names. 
+<!ENTITY wa.naming_description "&wa.naming_usetitles;: for new files suggest names from the page title; keep local file names.
 
-&wa.naming_usenumber;: for new files suggest increasing numbers as names; keep local file names.">
+&wa.naming_usenumbers;: for new files suggest increasing numbers as names; keep local file names.">
 <!ENTITY wa.saveformat "Save format">
 <!ENTITY wa.saveformat_onlyhtml "HTML only">
 <!ENTITY wa.saveformat_addbase "HTML, inject &lt;base&gt; tag">
