@@ -208,8 +208,16 @@ webannotator.main = {
             // Show already existing annotation (if any)
             webannotator.main.receiveShowAnnotations();
 
+            // if the user preference says that title popup
+            // should be shown, show it
             if (webannotator.prefs.getBoolPref("showTitlePopup")){
                 webannotator.titleAnnotation.showPopup();
+            } 
+            // Otherwise hide it (if the file comes from a saved file
+            // with colors activated, then the title tag is already
+            // here and we want to hide it
+            else {
+                webannotator.titleAnnotation.hidePopup();
             }
 
             // The page has not been modified yet
@@ -1644,7 +1652,6 @@ webannotator.main = {
      */
     runSave: function(){
         var filename = webannotator.lastSaveFile;
-        alert("save file in " + filename);
         if (filename != null) {
             webannotator.main.saveAnnotations(filename);
         }
@@ -1748,7 +1755,7 @@ webannotator.main = {
 
         var saveClone = content.document.cloneNode(true);
 
-        // add WA-htmltitle element and remove title annotation popup from HTML
+        // add WA-html title element and remove title annotation popup from HTML
         webannotator.titleAnnotation.createWAtitleElemFromPopup(saveClone);
 
         // Activate links
