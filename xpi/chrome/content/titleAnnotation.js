@@ -43,11 +43,14 @@ webannotator.titleAnnotation = {
             return titlePopup;
         }
 
+        // Get title from WA-title if already existing
+        // Otherwise from <title> in headers
         var title = doc.getElementsByTagName('WA-title')[0];
         var waTitle = true;
         if (!title){
             waTitle = false;
             title = doc.getElementsByTagName('title')[0];
+            // If no <title> in page, then skip
             if (!title){
                 return;
             }
@@ -55,25 +58,28 @@ webannotator.titleAnnotation = {
 
         // There is no "close" element intentionally (to prevent users
         // from annotating it). Use toolbar button to toggle the popup.
-        titlePopup = webannotator.misc.jsonToDOM([
-            "div", {
-                id: "webannotator-title-edit-popup",
-                style: "font-family:arial;z-index:11000;position:fixed;color:#333;background:#fff;margin:0 auto;width:30%;left:0;right:0;top:10px;box-shadow:0 0 1em black;border:2px solid blue;padding:0.5em;display:none;"
-            }, ""
-        ], doc);
+        var titlePopupTagName = "div";
+        var titlePopupAtts = {
+           id: "webannotator-title-edit-popup",
+           style: "font-family:arial;z-index:11000;position:fixed;color:#333;background:#fff;margin:0 auto;width:30%;left:0;right:0;top:10px;box-shadow:0 0 1em b    lack;border:2px solid blue;padding:0.5em;display:none;"
+        };
 
-        if (waTitle){
+        // waTitle should be true when there is <wa-title> html element in the page. 
+        // It is the case when you're editing annotation of an already annotated page. 
+        // Instead of creating a popup with page title contents you need to create a 
+        // popup with wa-title contents; it may contain annotation span elements.
+        if (waTitle) {
+            titlePopup = webannotator.misc.jsonToDOM([titlePopupTagName, titlePopupAtts, ""], doc);
             while(title.firstChild){
                 titlePopup.appendChild(title.firstChild);
             }
             // remove all WA-title elements because the can't coexist with popup
             webannotator.titleAnnotation.removeWAtitleElems();
-        } else{
-            titlePopup.innerHTML = title.innerHTML;
+        } else {
+            titlePopup = webannotator.misc.jsonToDOM([titlePopupTagName, titlePopupAtts, title.innerHTML], doc);
         }
 
         doc.body.appendChild(titlePopup);
-
         return titlePopup;
     },
 
@@ -100,7 +106,12 @@ webannotator.titleAnnotation = {
         if (popup){
             var htmlElement = doc.createElement("WA-title");
 
-            htmlElement.innerHTML = popup.innerHTML;
+            // Copy the content of title's popup into 
+            // WA-title tag for saving
+            var childNodes = popup.childNodes;            
+            for (var i = 0 ; i < childNodes.length ; i++) {
+                htmlElement.appendChild(childNodes[i].cloneNode(true));
+            }
             doc.documentElement.appendChild(htmlElement);
 
             // hide WA-title element only if "Keep colors" is unchecked
