@@ -510,11 +510,11 @@ webannotator.htmlWA = {
                         toPush[wa_prefix + attrName] = element.getAttribute(attrName);
                     }
                 }
-                for (var elem in toRemove) {
-                    element.removeAttribute(toRemove[elem]);
+                for (var attrName in toRemove) {
+                    element.removeAttribute(toRemove[attrName]);
                 }
-                for (var elem in toPush) {
-                    element.setAttribute(elem, toPush[elem]);
+                for (var attrName in toPush) {
+                    element.setAttribute(attrName, toPush[attrName]);
                 }
             }
             _status = "disable";
@@ -527,21 +527,21 @@ webannotator.htmlWA = {
                 var element = links[i];
                 var attrs = element.attributes;
                 var attrName; var length = attrs.length;
-                for (var attr, j = 0 ; j < length; j++){
-                    var toRemove = [];
-                    var toPush = {};
-                    attr = attrs.item(j);
+                var toRemove = [];
+                var toPush = {};
+                for (var j = 0 ; j < length; j++){
+                    var attr = attrs.item(j);
                     attrName = attr.nodeName;
                     if (attrName.substring(0, wa_prefix.length).toLowerCase() === wa_prefix.toLowerCase()) {
                         toRemove.push(attrName);
                         toPush[attrName.substring(wa_prefix.length, attrName.length)] = element.getAttribute(attrName);
                    }
                 }
-                for (var elem in toRemove) {
-                    element.removeAttribute(toRemove[elem]);
+                for (var attrName in toRemove) {
+                    element.removeAttribute(toRemove[attrName]);
                 }
-                for (var elem in toPush) {
-                    element.setAttribute(elem, toPush[elem]);
+                for (var attrName in toPush) {
+                    element.setAttribute(attrName, toPush[attrName]);
                 }
 
 
