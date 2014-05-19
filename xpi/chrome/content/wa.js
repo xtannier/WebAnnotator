@@ -212,7 +212,7 @@ webannotator.main = {
             // should be shown, show it
             if (webannotator.prefs.getBoolPref("showTitlePopup")){
                 webannotator.titleAnnotation.showPopup();
-            } 
+            }
             // Otherwise hide it (if the file comes from a saved file
             // with colors activated, then the title tag is already
             // here and we want to hide it
@@ -1647,7 +1647,7 @@ webannotator.main = {
         }
     },
 
-    /**  
+    /**
      * "Save..." handler
      */
     runSave: function(){
@@ -1655,7 +1655,7 @@ webannotator.main = {
         if (filename != null) {
             webannotator.main.saveAnnotations(filename);
         }
-    },   
+    },
 
 
     /**
@@ -2176,8 +2176,9 @@ webannotator.main = {
                 flags = flags | persist.ENCODE_FLAGS_ABSOLUTE_LINKS;
             }
 
-            if (exportFormat == 'add_base'){
-                var baseUrl = content.window.location.protocol + "//" + content.window.location.host + "/";
+            var protocol = content.window.location.protocol;
+            if (exportFormat == 'add_base' && protocol != 'file:'){
+                var baseUrl = protocol + "//" + content.window.location.host + "/";
                 webannotator.main.addBaseTag(doc, baseUrl);
             }
 
