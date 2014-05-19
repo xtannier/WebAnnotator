@@ -212,7 +212,7 @@ webannotator.main = {
             // should be shown, show it
             if (webannotator.prefs.getBoolPref("showTitlePopup")){
                 webannotator.titleAnnotation.showPopup();
-            } 
+            }
             // Otherwise hide it (if the file comes from a saved file
             // with colors activated, then the title tag is already
             // here and we want to hide it
@@ -573,7 +573,7 @@ webannotator.main = {
         // event listeners cannot be registered for the onbeforeunload event with
         // the addEventListener and attachEvent methods
         // (only Safari and Google Chrome support it).
-        content.document.body.setAttribute("onbeforeunload", "");
+        content.document.body.removeAttribute("onbeforeunload");
 
         content.document.body.removeEventListener("mouseup", webannotator.htmlWA.openMenu, false);
 
@@ -1303,7 +1303,7 @@ webannotator.main = {
             colors[i].parentNode.removeChild(colors[i]);
         }
 
-        clone.body.setAttribute("onbeforeunload", "");
+        clone.body.removeAttribute("onbeforeunload");
 
         // Replace <span>
         var spans = clone.getElementsByTagName("span");
@@ -1647,7 +1647,7 @@ webannotator.main = {
         }
     },
 
-    /**  
+    /**
      * "Save..." handler
      */
     runSave: function(){
@@ -1655,7 +1655,7 @@ webannotator.main = {
         if (filename != null) {
             webannotator.main.saveAnnotations(filename);
         }
-    },   
+    },
 
 
     /**
@@ -1780,7 +1780,7 @@ webannotator.main = {
         element = saveClone.getElementById("webannotator-edit-menu");
         element.parentNode.removeChild(element);
 
-        saveClone.body.setAttribute("onbeforeunload", "");
+        saveClone.body.removeAttribute("onbeforeunload");
 
         // Delete WA-specific scripts
         var head = saveClone.getElementsByTagName("head")[0];
