@@ -182,8 +182,8 @@ webannotator.main = {
             // Add elements concerning colors
             var colorNodes = content.document.getElementsByTagName("WA-color");
             // remove existing color items
-            for (i = 0 ; i < colorNodes.length ; i++) {
-                var htmlColorElement = colorNodes[i];
+            while (colorNodes.length){
+                var htmlColorElement = colorNodes[0];
                 htmlColorElement.parentNode.removeChild(htmlColorElement);
             }
 
@@ -212,7 +212,7 @@ webannotator.main = {
             // should be shown, show it
             if (webannotator.prefs.getBoolPref("showTitlePopup")){
                 webannotator.titleAnnotation.showPopup();
-            } 
+            }
             // Otherwise hide it (if the file comes from a saved file
             // with colors activated, then the title tag is already
             // here and we want to hide it
@@ -1299,8 +1299,8 @@ webannotator.main = {
 
         // Remove <wa-color>
         var colors = clone.getElementsByTagName("wa-color");
-        for(i = 0; i < colors.length ; i++){
-            colors[i].parentNode.removeChild(colors[i]);
+        while (colors.length) {
+            colors[0].parentNode.removeChild(colors[0]);
         }
 
         clone.body.setAttribute("onbeforeunload", "");
@@ -1360,7 +1360,7 @@ webannotator.main = {
         var haveSpanWA = true;
         // Remove all <span> tags (those were only for human reading, no need
         // in export mode)
-        while(haveSpanWA) {
+        while (haveSpanWA) {
             haveSpanWA = false;
             spans = clone.getElementsByTagName("span");
             for(i = 0; i < spans.length ; i++)	{
@@ -1647,7 +1647,7 @@ webannotator.main = {
         }
     },
 
-    /**  
+    /**
      * "Save..." handler
      */
     runSave: function(){
@@ -1655,7 +1655,7 @@ webannotator.main = {
         if (filename != null) {
             webannotator.main.saveAnnotations(filename);
         }
-    },   
+    },
 
 
     /**
@@ -1913,7 +1913,7 @@ webannotator.main = {
     updateTable: function (selectedIds, updateList) {
         var xulTable = document.getElementById("WebAnnotator_tablecontent");
         // Remove all children
-        while(xulTable.hasChildNodes()) {
+        while (xulTable.hasChildNodes()) {
             xulTable.removeChild(xulTable.firstChild);
         }
         // Annotation types, for menulist selection
@@ -1956,7 +1956,7 @@ webannotator.main = {
             var menulist = document.getElementById("WebAnnotator_annotation_list");
             var menupopup = menulist.firstChild;
             // Remove all children
-            while(menupopup.hasChildNodes()) {
+            while (menupopup.hasChildNodes()) {
                 menupopup.removeChild(menupopup.firstChild);
             }
             // Add types

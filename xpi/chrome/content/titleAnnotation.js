@@ -64,9 +64,9 @@ webannotator.titleAnnotation = {
            style: "font-family:arial;z-index:11000;position:fixed;color:#333;background:#fff;margin:0 auto;width:30%;left:0;right:0;top:10px;box-shadow:0 0 1em b    lack;border:2px solid blue;padding:0.5em;display:none;"
         };
 
-        // waTitle should be true when there is <wa-title> html element in the page. 
-        // It is the case when you're editing annotation of an already annotated page. 
-        // Instead of creating a popup with page title contents you need to create a 
+        // waTitle should be true when there is <wa-title> html element in the page.
+        // It is the case when you're editing annotation of an already annotated page.
+        // Instead of creating a popup with page title contents you need to create a
         // popup with wa-title contents; it may contain annotation span elements.
         if (waTitle) {
             titlePopup = webannotator.misc.jsonToDOM([titlePopupTagName, titlePopupAtts, ""], doc);
@@ -94,8 +94,8 @@ webannotator.titleAnnotation = {
     removeWAtitleElems: function(doc){
         doc = doc || content.document;
         var waTitleElems = doc.getElementsByTagName('WA-title');
-        for (var i=0; i<waTitleElems.length; i++){
-            var elem = waTitleElems[i];
+        while (waTitleElems.length){
+            var elem = waTitleElems[0];
             elem.parentNode.removeChild(elem);
         }
     },
@@ -106,9 +106,9 @@ webannotator.titleAnnotation = {
         if (popup){
             var htmlElement = doc.createElement("WA-title");
 
-            // Copy the content of title's popup into 
+            // Copy the content of title's popup into
             // WA-title tag for saving
-            var childNodes = popup.childNodes;            
+            var childNodes = popup.childNodes;
             for (var i = 0 ; i < childNodes.length ; i++) {
                 htmlElement.appendChild(childNodes[i].cloneNode(true));
             }
