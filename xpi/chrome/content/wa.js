@@ -258,7 +258,6 @@ webannotator.main = {
         link.setAttribute("id","custom_css");
         link.setAttribute("type","text/css");
         link.setAttribute("rel","stylesheet");
-//        link.setAttribute("href", webannotator.contentPath + "schemas/"+ webannotator.dtdFileName + ".css");
         var cssFilePath = webannotator.main.getPathEx();
         cssFilePath.append(webannotator.dtdFileName + ".css");
         link.setAttribute("href", cssFilePath);
