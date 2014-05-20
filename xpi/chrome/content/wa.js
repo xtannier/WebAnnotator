@@ -13,9 +13,6 @@ webannotator.schemasFileName = "elements.json";
 webannotator.schemaConstraintsFileName = "elementConstraints.json";
 webannotator.schemaColorsFileName = "elementColors.json";
 
-// Path to chrome content
-webannotator.contentPath = "chrome://webannotator/content/";
-
 // Names of the schema files
 webannotator.schemas = [];
 
@@ -1793,12 +1790,6 @@ webannotator.main = {
         var extensionDataPath = webannotator.main.getPathEx();
         for (headChild in head.childNodes) {
             var child = head.childNodes[headChild];
-            // javascripts
-            if (child.nodeType == 1 && child.getAttribute("src") !== null) {
-                if (child.getAttribute("src").substr(0, webannotator.contentPath.length) == webannotator.contentPath) {
-                    toDelete.push(child);
-                }
-            }
             // specific CSS
             if (child.nodeType == 1 && child.getAttribute("href") !== null) {
                 if (child.getAttribute("href") == extensionDataPath + "/" + webannotator.dtdFileName + ".css") {
