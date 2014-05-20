@@ -19,18 +19,18 @@
                    oncommand="webannotator.main.updateMenus(true, false)">
       <menupopup id="WebAnnotator_menu_ButtonPopup">
         <menuitem id="WebAnnotator_b_importMenu" oncommand="webannotator.main.importDTDFile()"/>
-        <menu id="WebAnnotator_b_chooseMenu" >
+        <menu id="WebAnnotator_b_chooseMenu" disabled="true" >
           <menupopup id="WebAnnotator_b_chooseMenu_pop" >
             <menuitem id="WebAnnotator_b_chooseMenu1"/>
           </menupopup>
         </menu>
-        <menu id="WebAnnotator_b_deleteMenu">
+        <menu id="WebAnnotator_b_deleteMenu" disabled="true" >
           <menupopup id="WebAnnotator_b_deleteMenu_pop">
             <menuitem id="WebAnnotator_b_deleteMenu1"/>
           </menupopup>
         </menu>
         <menuseparator/>
-        <menuitem id="WebAnnotator_b_activeMenu" oncommand=""/>
+        <menuitem id="WebAnnotator_b_activeMenu" disabled="true" oncommand=""/>
         <menuseparator/>
         <menuitem id="WebAnnotator_b_saveasMenu" disabled="true" oncommand="webannotator.main.runSaveAs()"/>
         <menuitem id="WebAnnotator_b_saveMenu" disabled="true" oncommand="webannotator.main.runSave()"/>
