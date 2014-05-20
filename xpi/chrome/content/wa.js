@@ -175,7 +175,10 @@ webannotator.main = {
             webannotator.main.buildAnnotations();
             webannotator.main.activateHTMLDocument();
 
-            document.getElementById('WebAnnotator_activeButton').classList.add("active");
+            var activeButton = document.getElementById('WebAnnotator_activeButton');
+            if (activeButton != null) {
+                document.getElementById('WebAnnotator_activeButton').classList.add("active");
+            }
 
             webannotator.session = true;
 
@@ -255,7 +258,10 @@ webannotator.main = {
         link.setAttribute("id","custom_css");
         link.setAttribute("type","text/css");
         link.setAttribute("rel","stylesheet");
-        link.setAttribute("href", webannotator.contentPath + "schemas/"+ webannotator.dtdFileName + ".css");
+//        link.setAttribute("href", webannotator.contentPath + "schemas/"+ webannotator.dtdFileName + ".css");
+        var cssFilePath = webannotator.main.getPathEx();
+        cssFilePath.append(webannotator.dtdFileName + ".css");
+        link.setAttribute("href", cssFilePath);
         head.appendChild(link);
 
         var body = content.document.body;
@@ -1200,7 +1206,6 @@ webannotator.main = {
             if (res == nsIFilePicker.returnOK){
                 var file = fileChooser.file;
                 var label = file.leafName;
-
                 var error = webannotator.main.readDTDFile(file);
 
                 if(error <= 0) {
@@ -1786,6 +1791,7 @@ webannotator.main = {
         var head = saveClone.getElementsByTagName("head")[0];
         var toDelete = [];
         var headChild;
+        var extensionDataPath = webannotator.main.getPathEx();
         for (headChild in head.childNodes) {
             var child = head.childNodes[headChild];
             // javascripts
@@ -1796,7 +1802,7 @@ webannotator.main = {
             }
             // specific CSS
             if (child.nodeType == 1 && child.getAttribute("href") !== null) {
-                if (child.getAttribute("href") == webannotator.contentPath + "schemas/"+ webannotator.dtdFileName + ".css") {
+                if (child.getAttribute("href") == extensionDataPath + "/" + webannotator.dtdFileName + ".css") {
                     toDelete.push(child);
                 }
             }
