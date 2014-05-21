@@ -19,9 +19,6 @@ webannotator.schemas = [];
 // Name of the DTD file
 webannotator.dtdFileName = "";
 
-// Path of the extension
-//webannotator.pathEX = "";
-
 // List of elements parsed from the DTD
 webannotator.elements = {};
 
@@ -139,27 +136,13 @@ webannotator.main = {
     },
 
     /**
-     * Initialize the extension path
+     * Initialize the schema files
      */
-    setPathEX: function (){
+    init: function (){
         // Read the names of files
         webannotator.main.readSchemasFile();
         // Create elements in XUL button and menus
         setTimeout(function() {webannotator.main.createMenus(); }, 1000);
-
-/*		var id = "WebAnnotator@limsi.fr";
-        try {
-            // Firefox 4 and later; Mozilla 2 and later
-            Components.utils.import("resource://gre/modules/AddonManager.jsm");
-            AddonManager.getAddonByID(id, function(addon) {
-                var reg =new RegExp("/");
-                webannotator.main.setPathEX2(addon.getResourceURI("wa.js").path.split("wa.js")[0].substring(1));
-            });
-        } catch (ex) {
-            // Firefox 3.6 and before; Mozilla 1.9.2 and before
-            var em = Components.classes["@mozilla.org/extensions/manager;1"].getService(Components.interfaces.nsIExtensionManager).getInstallLocation(id).getItemLocation(id);
-            webannotator.main.setPathEX2(em.path);
-        }*/
     },
 
     /**
@@ -245,20 +228,7 @@ webannotator.main = {
      * Activate annotation session in the current HTML page
      */
     activateHTMLDocument: function () {
-        var head = content.document.getElementsByTagName("head")[0];
         var scriptPath;
-
-        // Once the schema is selected,
-        // include the pre-defined corresponding CSS file in order
-        // to visualize highlighted spans
-        var link = content.document.createElement("link");
-        link.setAttribute("id","custom_css");
-        link.setAttribute("type","text/css");
-        link.setAttribute("rel","stylesheet");
-        var cssFilePath = webannotator.main.getPathEx();
-        cssFilePath.append(webannotator.dtdFileName + ".css");
-        link.setAttribute("href", cssFilePath);
-        head.appendChild(link);
 
         var body = content.document.body;
 
@@ -1404,43 +1374,24 @@ webannotator.main = {
 
 
     /**
-     * Create a CSS file according to the sections of current DTD file
+     * Create CSS information on the sections of current DTD file
+     * Store it in a JSON structure (will be saved as .json)
+     * CSS styles will be attributed inline to created spans, so that we avoid
+     * dynamic integration of a CSS link to the web page.
      */
     createCSS: function (){
-        var file = webannotator.main.getPathEx();
-        file.append(webannotator.dtdFileName + ".css");
-        // if file does not exist, create it
-        if (file.exists()) {
-            file.remove(false);
-        }
-        file.create(file.NORMAL_FILE_TYPE, 0666);
-        try {
-            // write data to file then close output stream
-            var content = "";
+        var content = "";
 
-            var i = 0;
-            var n;
-            var _local_colors = {};
-            for (n in webannotator.elements[webannotator.dtdFileName]) {
-                var twoColors = webannotator.htmlWA.getColor(webannotator.dtdFileName, n, i);
-                _local_colors[n] = twoColors;
-                var colorId1 = twoColors[0];
-                var colorId2 = twoColors[1];
-                content += ".WebAnnotator_"+ n +" {color: " + colorId1 +"; background-color: " + colorId2 +"; }\n";
-                i++;
-            }
-            if (!webannotator.colors[webannotator.dtdFileName]) {
-                webannotator.colors[webannotator.dtdFileName] = _local_colors;
-            }
-
-            var ostream = Components.classes["@mozilla.org/network/file-output-stream;1"].
-                createInstance(Components.interfaces.nsIFileOutputStream);
-            ostream.init(file, 2, 0x200, false);
-            ostream.write(content, content.length);
-            ostream.close();
+        var i = 0;
+        var n;
+        var _local_colors = {};
+        for (n in webannotator.elements[webannotator.dtdFileName]) {
+            var twoColors = webannotator.htmlWA.getColor(webannotator.dtdFileName, n, i);
+            _local_colors[n] = twoColors;
+            i++;
         }
-        catch (ex) {
-            alert("ERROR: Failed to write file: " + file.path);
+        if (!webannotator.colors[webannotator.dtdFileName]) {
+            webannotator.colors[webannotator.dtdFileName] = _local_colors;
         }
     },
 
@@ -1613,18 +1564,6 @@ webannotator.main = {
 
         webannotator.main.updateMenus(true, true);
 
-        // Does not work if not adding a link before the following one !!??
-        var head = window.content.document.getElementsByTagName("head")[0];
-        //	var link = content.document.createElement("link");
-
-        var link = webannotator.misc.jsonToDOM(["link", {}, ""], content.document);
-        head.appendChild(link);
-
-        var link2 = webannotator.misc.jsonToDOM(["link", {type:"text/css",
-                                           rel:"stylesheet",
-                                           href:"chrome://webannotator/content/schemas/"+ webannotator.dtdFileName + ".css"},
-                                  ""], content.document);
-        head.appendChild(link2);
         webannotator.main.setSpanColorStyle(window.content.document, true);
         webannotator.main.initVarMenu(dtd);
     },
@@ -1782,26 +1721,6 @@ webannotator.main = {
         element.parentNode.removeChild(element);
 
         saveClone.body.removeAttribute("onbeforeunload");
-
-        // Delete WA-specific scripts
-        var head = saveClone.getElementsByTagName("head")[0];
-        var toDelete = [];
-        var headChild;
-        var extensionDataPath = webannotator.main.getPathEx();
-        for (headChild in head.childNodes) {
-            var child = head.childNodes[headChild];
-            // specific CSS
-            if (child.nodeType == 1 && child.getAttribute("href") !== null) {
-                if (child.getAttribute("href") == extensionDataPath + "/" + webannotator.dtdFileName + ".css") {
-                    toDelete.push(child);
-                }
-            }
-
-        }
-        var elemToDelete;
-        for (elemToDelete in toDelete) {
-            toDelete[elemToDelete].parentNode.removeChild(toDelete[elemToDelete]);
-        }
 
         // Save current page
         webannotator.main.save(saveClone, saveFileName);
@@ -2151,21 +2070,10 @@ webannotator.main = {
                 }
             }
 
-//			var persistListener = new webannotator.main.PersistProgressListener();
             var persist = Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"]
                 .createInstance(Components.interfaces.nsIWebBrowserPersist);
 
             persist.persistFlags = persist.PERSIST_FLAGS_REPLACE_EXISTING_FILES;
-//			persistListener.saveFileName = dest;
-//			if (exportFileName !== null) {
-//				exportFileName = exportFileName.replace(/\\/g,"\\\\");
-//			}
-//			persistListener.exportFileName = exportFileName;
-//			persist.progressListener = persistListener;
-//			webannotator.saveDone = false;
-//			var cleanDest = dest.replace(/\\/g,"\\\\");
-//			webannotator.endSaveEvent = setTimeout(function() {webannotator.main.endSave(cleanDest, exportFileName)}, 1000);
-//			persist.saveDocument(doc, file, dir, null, persist.ENCODE_FLAGS_RAW, null);
 
             var flags = persist.ENCODE_FLAGS_RAW | persist.ENCODE_FLAGS_ENCODE_BASIC_ENTITIES;
             if (exportFormat == 'absolute_links'){
@@ -2192,5 +2100,5 @@ webannotator.main = {
 
 
 // Set extension file path and read annotation schemas file
-document.onLoad = webannotator.main.setPathEX();
+document.onLoad = webannotator.main.init();
 
