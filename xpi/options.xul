@@ -50,4 +50,12 @@
 &wa.saveformat_description;
 </setting>
 
+<setting pref="extensions.webannotator.editIconsShowDelay" type="integer" title="&wa.editicons_show_delay;">
+&wa.editicons_show_delay_description;
+</setting>
+
+<setting pref="extensions.webannotator.editIconsHideDelay" type="integer" title="&wa.editicons_hide_delay;">
+&wa.editicons_hide_delay_description;
+</setting>
+
 </vbox>
