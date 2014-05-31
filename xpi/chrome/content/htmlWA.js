@@ -93,6 +93,7 @@ webannotator.htmlWA = {
      */
     showEditAnnotationMenu: function (evt, id) {
         clearTimeout(webannotator.showEditEvent);
+        var showDelay = webannotator.prefs.getIntPref('editIconsShowDelay');
         webannotator.htmlWA.receiveWindowUnblinkAnnotation();
         webannotator.popups.hide_popup("webannotator-edit-menu");
         webannotator.showEditEvent = setTimeout(function() {
@@ -103,7 +104,7 @@ webannotator.htmlWA = {
                 webannotator.main.receiveSelectAnnotation(id);
                 webannotator.htmlWA.receiveWindowBlinkAnnotation(id);
             }
-        }, 500);
+        }, showDelay);
     },
 
     /**
@@ -120,7 +121,12 @@ webannotator.htmlWA = {
      */
     hideEditAnnotationMenu: function () {
         clearTimeout(webannotator.showEditEvent);
-        webannotator.showEditEvent = setTimeout(function() {webannotator.popups.hide_popup('webannotator-edit-menu'); webannotator.main.receiveShowAnnotations(); webannotator.htmlWA.receiveWindowUnblinkAnnotation();}, 500);
+        var hideDelay = webannotator.prefs.getIntPref('editIconsHideDelay');
+        webannotator.showEditEvent = setTimeout(function() {
+            webannotator.popups.hide_popup('webannotator-edit-menu');
+            webannotator.main.receiveShowAnnotations();
+            webannotator.htmlWA.receiveWindowUnblinkAnnotation();
+        }, hideDelay);
     },
 
     /**

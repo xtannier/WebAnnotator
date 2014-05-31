@@ -38,14 +38,14 @@
 <!ENTITY wa.showtitlepopup "Montrer le popup d'annotation du titre (balise &lt;title&gt;) dès l'activation">
 <!ENTITY wa.showtitlepopup_description "Si cette option est activée, le popup d'annotation du titre (balise &lt;title&gt;) sera affiché dès l'activation. Dans le cas contraire, il faudra cliquer sur l'icône associée pour montrer le titre et l'annoter">
 <!ENTITY wa.activate_links "Activer les liens à la sauvegarde">
-<!ENTITY wa.activate_links_description "&wa.name; désactive temporairement les liens de la page pendant l'annotation, et les liens sont réactivés pour la sauvegarde. 
+<!ENTITY wa.activate_links_description "&wa.name; désactive temporairement les liens de la page pendant l'annotation, et les liens sont réactivés pour la sauvegarde.
 Désactivez cette option pour ne pas réactiver les liens lors de la sauvegarde.">
 <!ENTITY wa.autoexport "Exportation automatique">
 <!ENTITY wa.autoexport_description "Crée automatiquement un fichier &lt;fichier&gt;.export.html en plus du fichier &lt;fichier&gt;.html de sauvegarde quand la commande '&wa.saveas;' est appelée.">
 <!ENTITY wa.naming "Stratégie de nommage">
 <!ENTITY wa.naming_usetitles "Utiliser les titres">
 <!ENTITY wa.naming_usenumbers "Utiliser des numéros">
-<!ENTITY wa.naming_description "&wa.naming_usetitles; : pour les nouveaux fichiers, le titre de la page est suggéré lors de la première sauvegarde. 
+<!ENTITY wa.naming_description "&wa.naming_usetitles; : pour les nouveaux fichiers, le titre de la page est suggéré lors de la première sauvegarde.
 
 &wa.naming_usenumbers;: des nombres auto-incrémentés sont suggérés comme nom de fichier lors de la première sauvegarde.">
 <!ENTITY wa.saveformat "Format de sauvegarde">
@@ -61,3 +61,7 @@ Désactivez cette option pour ne pas réactiver les liens lors de la sauvegarde.
 
 &wa.saveformat_complete; : sauvegarde l'intégrale de la page, avec les images et l'ensemble des ressources. Ce choix vous permet de visualiser la page par la suite sur votre navigateur, mais peut ne pas préserver la structure de la page HTML originale. &wa.name; crée un répertoire contenant l'ensemble des images et des ressources nécessaires pour la visualisation..
 ">
+<!ENTITY wa.editicons_show_delay "Popup delay">
+<!ENTITY wa.editicons_show_delay_description "Delay (in ms) after which &quot;Edit&quot; and &quot;Delay&quot; icons appear when mouse is over an entity.">
+<!ENTITY wa.editicons_hide_delay "Popup hiding delay">
+<!ENTITY wa.editicons_hide_delay_description "Delay (in ms) after which &quot;Edit&quot; and &quot;Delay&quot; icons disappear when mouse moves out of an entity.">

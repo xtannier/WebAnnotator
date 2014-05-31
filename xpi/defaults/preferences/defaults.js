@@ -5,3 +5,5 @@ pref("extensions.webannotator.quitAfterSave", true);
 pref("extensions.webannotator.autoExport", false);
 pref("extensions.webannotator.showTitlePopup", false);
 pref("extensions.webannotator.namingStrategy", "numbers");
+pref("extensions.webannotator.editIconsShowDelay", 100);
+pref("extensions.webannotator.editIconsHideDelay", 500);
