@@ -61,6 +61,6 @@
 &wa.saveformat_complete;: Save the whole web page along with pictures. This choice allows you to view it as originally shown (with pictures), but it may not keep the HTML link structure of the original page. &wa.name; creates a new directory where the page is saved to save pictures and other files necessary to show the whole web page.
 ">
 <!ENTITY wa.editicons_show_delay "Popup delay">
-<!ENTITY wa.editicons_show_delay_description "Delay (in ms) after which &quot;Edit&quot; and &quot;Delay&quot; icons appear when mouse is over an entity.">
+<!ENTITY wa.editicons_show_delay_description "Delay (in ms) after which &quot;Edit&quot; and &quot;Delete&quot; icons appear when mouse is over an annotation.">
 <!ENTITY wa.editicons_hide_delay "Popup hiding delay">
-<!ENTITY wa.editicons_hide_delay_description "Delay (in ms) after which &quot;Edit&quot; and &quot;Delay&quot; icons disappear when mouse moves out of an entity.">
+<!ENTITY wa.editicons_hide_delay_description "Delay (in ms) after which &quot;Edit&quot; and &quot;Delete&quot; icons disappear when mouse moves out of an annotation.">
