@@ -287,7 +287,7 @@ webannotator.main = {
                                     style:"font-family:arial;z-index:11001;position:absolute;display:none;background-color:white;",
                                     onmouseover:function(e) { webannotator.htmlWA.retainEditAnnotationMenu(); return false;},
                                     onmouseout:function(e) { webannotator.htmlWA.hideEditAnnotationMenu(); return false;}
-                                   },
+												  },
                             [
                                 ["img", {onclick:function(e) { webannotator.popups.hide_popup("webannotator-edit-menu"); webannotator.main.receiveDeleteAnnotation(); return false;},
                                          src:'chrome://webannotator/skin/suppr.png'}, ""],
@@ -1946,8 +1946,7 @@ webannotator.main = {
      */
     clickTree: function (tree, event) {
         var row = {}, column = {}, part = {};
-        var boxobject = tree.boxObject;
-        boxobject.QueryInterface(Components.interfaces.nsITreeBoxObject);
+        var boxobject = tree.treeBoxObject;
         boxobject.getCellAt(event.clientX, event.clientY, row, column, part);
         // remove all blinking elements
         webannotator.htmlWA.receiveWindowUnblinkAnnotation();
