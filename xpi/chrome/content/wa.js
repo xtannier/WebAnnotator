@@ -1369,7 +1369,7 @@ webannotator.main = {
         // Keep DTD file name
         var element = window.content.document.getElementById("WA_data_element");
         element.setAttribute("dtd", webannotator.dtdFileName);
-        window.showModalDialog("chrome://webannotator/content/options.xul",1);
+        window.open('chrome://webannotator/content/options.xul','wa_options_elem', 'chrome,centerscreen');
     },
 
 

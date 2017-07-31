@@ -36,7 +36,8 @@
         <menuitem id="WebAnnotator_b_saveMenu" disabled="true" oncommand="webannotator.main.runSave()"/>
         <menuitem id="WebAnnotator_b_exportasMenu" disabled="true" oncommand="webannotator.main.runExportAs()"/>
         <menuseparator/>
-        <menuitem id="WebAnnotator_b_descriptionMenu" oncommand="window.showModalDialog('chrome://webannotator/content/description.xul',1)"/>
+        <menuitem id="WebAnnotator_b_descriptionMenu" oncommand="window.open('chrome://webannotator/content/description.xul','wa_description', 'chrome,centerscreen')"/>
+        <!-- <menuitem id="WebAnnotator_b_descriptionMenu" oncommand="window.showModalDialog('chrome://webannotator/content/description.xul',1)"/> -->
       </menupopup>
     </toolbarbutton>
 
@@ -78,7 +79,9 @@
         <menuitem id="WebAnnotator_t_saveMenu" disabled="true" oncommand="webannotator.main.runSave()"/>
         <menuitem id="WebAnnotator_t_exportasMenu" disabled="true" oncommand="webannotator.main.runExportAs()"/>
         <menuseparator/>
-        <menuitem id="WebAnnotator_t_descriptionMenu" oncommand="window.showModalDialog('chrome://webannotator/content/description.xul',1)"/>
+        <!-- <menuitem id="WebAnnotator_t_descriptionMenu" oncommand="window.showModalDialog('chrome://webannotator/content/description.xul',1)"/> -->
+        <menuitem id="WebAnnotator_t_descriptionMenu" oncommand="window.open('chrome://webannotator/content/description.xul','wa_description', 'chrome,centerscreen')"/>
+
       </menupopup>
     </menu>
   </menupopup>
